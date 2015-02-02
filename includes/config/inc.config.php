@@ -9,7 +9,7 @@
 	* @author        Jencube Team
 	* @license       http://opensource.org/licenses/gpl-license.php
 	*                GNU General Public License (GPL)
-	* @copyright     Copyright (c) 2014 Jencube
+	* @copyright     Copyright (c) 2015 Jencube
 	* @twitter       @deusex0 & @One_Oracle
   * @filesource    includes/config/inc.config.php
 	*
@@ -72,7 +72,7 @@
     'default_lang' => 'en-us',
 
     // Language folder
-    'lang_dir' => '/lang',
+    'lang_dir' => '/includes/languages',
 
     /*
     *
@@ -81,7 +81,16 @@
     */
 
     // Log folder
-    'log_path' => '/log',
+    'log_path' => '/logs',
+
+    /*
+    *
+    * System Backup
+    *
+    */
+
+    // backup folder
+    'log_path' => '/backups',
 
     /*
     *
@@ -165,7 +174,7 @@
     'include' => '/includes',
 
     // Config folder
-    'config' => '/config/functions',
+    'config' => '/includes/config',
 
     // functions folder
     'function' => '/includes/functions',
@@ -176,17 +185,20 @@
     // Classes folder
     'template' => '/template',
 
-    // Theme folder
-    'theme' => '/contents/themes',
+    // Images folder
+    'images' => '/images',
 
     // Images folder
-    'images' => '/contents/template/images',
+    'ico' => '/images/icons',
 
     // Javascript folder
-    'javascript' => '/contents/template/js',
+    'javascript' => '/javascripts',
 
     // Stylesheet folder
-    'stylesheet' => '/contents/template/css',
+    'stylesheet' => '/stylesheets',
+
+    // Theme folder
+    'theme' => '/contents/themes',
 
     // Plugins folder
     'plugins' => '/contents/plugins',
