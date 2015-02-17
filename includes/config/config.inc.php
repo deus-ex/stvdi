@@ -99,10 +99,10 @@
     */
 
     // Error Handling
-    'error_handling' => FALSE,
+    'error_reporting' => TRUE,
 
     // Error handling type
-    'error_type' => 0,
+    'error_type' => 4,
 
     /*
     *
