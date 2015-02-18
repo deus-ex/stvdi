@@ -2,17 +2,19 @@
 
   /**
   *
-  *	This database class has a clean and common methods that works with various
-  * types of database (such as: msSQL, mySQL, mySQLi and postgres) and PDO. It
-  * has cache system integrated along side making it very effective and powerful
-  * database class..
+  *	This auto loader class helps to include all functions and library
+  * files (classes), no need to include or require a long list of files
+  * into your projects just initialize this class and it does all that
+  * for you.
   *
-  *	@version:       2.9.14
+  *	@version:       2.0.2
+  * @package        Stvdi
   *	@author:        Jencube Team
-  *	@license:       http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
-  * @copyright:     Copyright (c) 2013 Jencube
+  *	@license:       http://opensource.org/licenses/gpl-license.php 
+  *                 GNU General Public License (GPL)
+  * @copyright:     Copyright (c) 2013 - 2015 Jencube
   * @twitter:       @deusex0 & @One_Oracle
-  * @filesource     mt/inc/classes/class.db.php
+  * @filesource     includes/loader.inc.php
   *
   **/
 
@@ -24,11 +26,13 @@
     *
     * @access protected
     * @var array
+    * @since 1.0.0
     *
     **/
     protected $classPath = array(
                               'includes/libraries/'
                           );
+
 
     /**
     *
@@ -36,31 +40,13 @@
     *
     * @access protected
     * @var array
+    * @since 1.0.0
     *
     **/
     protected $functionPath = array(
                               'includes/functions/'
                           );
 
-    // /**
-    // *
-    // * Classes file name
-    // *
-    // * @access protected
-    // * @var array|string
-    // *
-    // **/
-    // protected $classes;
-
-    // /**
-    // *
-    // * Funtions file name
-    // *
-    // * @access protected
-    // * @var array|string
-    // *
-    // **/
-    // protected $functions;
 
     /**
     *
@@ -68,6 +54,7 @@
     *
     * @access protected
     * @var string
+    * @since 1.0.0
     *
     **/
     protected $acceptedExt = '.php, .class.php, .inc, .inc.php, .funct.php';
@@ -79,9 +66,11 @@
     *
     * @access protected
     * @var array
+    * @since 1.0.0
     *
     **/
     protected $errorMsg = array();
+
 
     /**
     *
@@ -92,6 +81,7 @@
     *
     **/
     protected $suppressErrors = FALSE;
+
 
     /**
     *
@@ -116,6 +106,7 @@
     *
     * @access private
     * @return bool
+    * @since 1.0.0
     *
     **/
     private function init() {
@@ -135,12 +126,12 @@
 
     }
 
-
     /**
     *
-    * Specify extensions that may be loaded
+    * Specify extension(s) that may be loaded
     *
     * @access private
+    * @since 1.0.0
     *
     **/
     private function set_extension() {
@@ -154,6 +145,7 @@
     * Specify path where files are loaded from
     *
     * @access private
+    * @since 1.0.0
     *
     **/
     private function set_path() {
@@ -170,10 +162,12 @@
 
     /**
     *
-    * Register the loader functions for other files that needs
+    * Register the loader functions for function files that needs
     * to be included.
     *
     * @access public
+    * @param string $fileDir
+    * @since 1.0.0
     *
     **/
     public function include_files( $fileDir = NULL ) {
@@ -207,10 +201,12 @@
 
     /**
     *
-    * Register the loader functions for class files
+    * Register the loader functions for class files that needs
+    * to be included
     *
     * @access private
-    * @param string|array $class -> Class name
+    * @param string|array $class
+    * @since 1.2.0
     *
     **/
     private function load_class( $class = NULL ) {
@@ -243,6 +239,7 @@
     * @param string $prefix -> Prefix of class|function name
     *                          i.e {prefix.}filename.php or {prefix-}filename.inc
     * @return bool|string
+    * @since 2.0.0
     *
     **/
     private function verify_file( $pathArray, $class = NULL ) {
@@ -261,7 +258,6 @@
             }
             $filePath = $this->absPath . $path . $fileName;
 
-            // echo $filePath . '<br />';
             if ( ( file_exists( $filePath ) ) || ( is_readable( $filePath ) ) ) {
               require $filePath;
             }
@@ -281,7 +277,10 @@
     * Initialize a new instance of loaded class
     *
     * @access public
+    * @param string $class
     * @return bool|string|array|integer
+    * @since 1.12.0
+    * @deprecated 2.0.0 -> not in use
     *
     **/
     public function init_class( $class ) {
@@ -295,6 +294,7 @@
     * Nullify any existing autoload
     *
     * @access public
+    * @since 1.0.0
     *
     **/
     public function reset_loader() {
@@ -307,7 +307,8 @@
     * Show loader errors
     *
     * @access public
-    * @return string|bool False if the showing of errors is disabled.
+    * @return string|bool False if the $suppressErrors is disabled.
+    * @since 1.0.0
     *
     **/
     public function errors() {

@@ -147,16 +147,16 @@
     */
 
     // Short date format
-    'short_date' => date( 'Y-m-d' ),
+    'short_date' => 'Y-m-d',
 
     // Long date format
-    'long_date' => date( 'F j, Y' ),
+    'long_date' => 'F j, Y',
 
     // Time format
-    'time' => date( 'H:i:s' ),
+    'time' => 'H:i:s',
 
     // Date and time format
-    'date_time' => date( 'Y-m-d H:i:s' ),
+    'date_time' => 'Y-m-d H:i:s',
 
     /*
     *

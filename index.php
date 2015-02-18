@@ -8,7 +8,7 @@
   $appDIR = str_replace( '\\', '/', realpath( dirname( __FILE__ ) ) );
   $appURL = str_replace( '\\', '/', 'http://' . $_SERVER['HTTP_HOST'] . dirname( $_SERVER['PHP_SELF'] ) );
 
-  // Defining appplication directory
+  // Defining application directory
   if ( ! defined( 'APP_DIR' ) ) {
     define ( 'APP_DIR', $appDIR );
   }
@@ -28,6 +28,5 @@
   if ( $config['error_reporting'] ) {
     php_error_reporting( $config['error_type'] );
   }
-
 
 ?>

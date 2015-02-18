@@ -4,12 +4,12 @@
   *
   * This is the system function file.
   *
-  * @version       1.0
+  * @version       2.0.0
   * @package       Stvdi
   * @author        Jencube Team
   * @license       http://opensource.org/licenses/gpl-license.php
   *                GNU General Public License (GPL)
-  * @copyright     Copyright (c) 2015 Jencube
+  * @copyright     Copyright (c) 2013 - 2015 Jencube
   * @twitter       @deusex0 & @One_Oracle
   * @filesource    includes/functions/system.funct.php
   *
@@ -26,6 +26,9 @@
   * 3 - All errors except notices and warnings
   * 4 - All errors except notices
   * 5 - All errors
+  *
+  * @param  integer $var
+  * @since 1.14.0
   *
   */
 
