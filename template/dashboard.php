@@ -77,6 +77,8 @@
                             <div class="hundredPercent floatLeft">
                                 <div class="rowBody borderAll Colour-White">
                                     <img src="../community/images/users/Amarachi.jpg" class="profileImg floatLeft dropShadow">
+                                    <div class="uploadImgButton"><button><h7>Change Photo</h7></button></div>
+
                                     <ul class="profileList">
                                         <li><h4 class="text-Black">Welcome, <strong>Amarachi Ezimoha</strong></h4></li>
                                         <li><h6><strong>Class:</strong> SS3</h6></li>
