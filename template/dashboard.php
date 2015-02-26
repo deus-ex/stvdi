@@ -17,10 +17,18 @@
                 <div class="thirtyThreePercent floatLeft"><input type="text" class="searchBar Colour-White" id="search" placeholder="Search Stvdi"/></div>
                 <ul class="topMenu floatRight">
                 	<li class="floatLeft">
-                    	<img src="../community/images/users/Amarachi.jpg" class="topProfileImg floatLeft"><h6 class="floatLeft">Amarachi Ezimoha</h6>
+                    	<img src="../community/images/users/Amarachi.jpg" class="topProfileImg floatLeft">
+                      <h6 class="floatLeft topProfileName">Amarachi Ezimoha</h6>
+                        <img src="../images/icons/down.png" class="userNavigator floatLeft">
                     </li>
-                    <li class="floatLeft"><img src="../images/icons/black218.png" class="menuImg"></li>
-                    <li class="floatLeft"><img src="../images/icons/notifications.png" class="menuImg"></li>
+                    <li class="floatLeft">
+                        <img src="../images/icons/black218.png" class="menuImg">
+                        <span class="topTitleTotal showTitleTotal floatRight Colour-Red text-White">6</span>
+                    </li>
+                    <li class="floatLeft">
+                        <img src="../images/icons/notifications.png" class="menuImg">
+                        <span class="topTitleTotal showTitleTotal floatRight Colour-Red text-White">10</span>
+                    </li>
                 </ul>
 			</div>
 			<!-- End #topBar -->

@@ -193,8 +193,24 @@ img{
     padding: 0 40px 0 10px !important;
 }
 
+.topMenu{
+	margin:5px 20px 0 0;
+}
+
 .topMenu li{
+	position:relative;
 	margin:0 10px 0 0;
+}
+
+.userNavigator{
+	width:30px;
+	height:30px;
+	margin:3px 0 0 0;
+	
+}
+
+.topProfileName{
+	margin:10px 0 0 0;
 }
 
 .topProfileImg{
@@ -352,6 +368,7 @@ img{
 
 .showTitleTotal{
 	font-weight:bold;
+	font-size:0.625em;;
 	width:20px;
 	height:20px;
 	border-radius:10px;
@@ -359,6 +376,12 @@ img{
 	vertical-align: middle;
 	line-height: 20px;
 }
+
+.topTitleTotal{
+    position: absolute;
+	border-radius:5px !important;
+    bottom: -5px;
+    right: 5px;}
 
 .bgImg{
 	width:100%;
