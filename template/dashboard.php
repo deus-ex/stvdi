@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta id="meta_referrer" content="default" name="referrer" />
-		<title>Stvdi</title>
+		<title>Stvdi: DashBoard</title>
 		<link href="../stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 		<link href="../stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
 	</head>
@@ -55,12 +55,17 @@
 			<div id="bodyWrapper">
     
                 <div id="chatBar" class="Colour-White floatRight">
-                	<div><input type="text" class="searchBar chatSearch Colour-White" id="search" placeholder="Search Chat"/></div>
-                    <img src="../community/images/users/Amarachi.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Amarachi Ezimoha</h6><span class="text-Green"><h7>Online</h7></span></div>
-                    <img src="../community/images/users/Ama.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Rabiu Abdul</h6><span class="text-Green"><h7>Online</h7></span></div>
-                    <img src="../community/images/users/Morphic.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Awelu Muhammad</h6><span class="text-Green"><h7>Online</h7></span></div>
-                    <img src="../community/images/users/photo.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Demola Sule</h6><span class="text-Lgray"><h7>Offline</h7></span></div>
-                    <img src="../community/images/users/peace.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Nkechi Ibeh</h6><span class="text-Green"><h7>Online</h7></span></div>
+                	<div class="chatName"><input type="text" class="searchBar chatSearch" id="search" placeholder="Search Chat"/></div>
+                    <img src="../community/images/users/Amarachi.jpg" class="chatImg floatLeft">
+                    <div class="chatName clearFix text-Blue"><h6 class="strong">Amarachi Ezimoha</h6><span class="text-Green"><h7>Online</h7></span></div>
+                    <img src="../community/images/users/Ama.jpg" class="chatImg floatLeft">
+                    <div class="chatName clearFix text-Blue"><h6 class="strong">Rabiu Abdul</h6><span class="text-Green"><h7>Online</h7></span></div>
+                    <img src="../community/images/users/Morphic.jpg" class="chatImg floatLeft">
+                    <div class="chatName clearFix text-Blue"><h6 class="strong">Awelu Muhammad</h6><span class="text-Green"><h7>Online</h7></span></div>
+                    <img src="../community/images/users/photo.jpg" class="chatImg floatLeft">
+                    <div class="chatName clearFix text-Blue"><h6 class="strong">Demola Sule</h6><span class="text-Lgray"><h7>Offline</h7></span></div>
+                    <img src="../community/images/users/peace.jpg" class="chatImg floatLeft">
+                    <div class="chatName clearFix text-Blue"><h6 class="strong">Nkechi Ibeh</h6><span class="text-Green"><h7>Online</h7></span></div>
                 </div>
                 <!-- End #chatBar -->
                 
@@ -247,7 +252,6 @@
 
 		</div>
 		<!-- End #wrapper -->
-
 
 	</body>
 </html>

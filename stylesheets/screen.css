@@ -189,7 +189,7 @@ img{
 }
 
 .searchBar{
-	background:url(../images/icons/search.png) center right no-repeat;
+	background: url(../images/icons/search.png) center right no-repeat;
     padding: 0 40px 0 10px !important;
 }
 
@@ -374,22 +374,22 @@ img{
     width: 150px !important;
 }
 
-.miniListContent {
-	margin-top:0;
+.chatName{
+	padding:10px 20px;
 }
 
-.miniListContentRightPad {
-	padding-right: 45px !important;
+.chatName:first-child{
+	border-bottom:thin solid #CCC;
+}
+
+.chatName:nth-of-type(odd) {
+    background: #F6F4F5;
 }
 
 .chatName span, .miniListName span{
 	display:list-item;
 	list-style-type: circle inside;
 	margin: 0 0 0 70px;
-}
-
-.miniListName span{
-	margin: 0;
 }
 
 .chatImg, .miniProfileImg {
@@ -399,6 +399,18 @@ img{
 	border-radius:20px;
 	cursor: pointer;
     cursor: hand;
+}
+
+.miniListContent {
+	margin-top:0;
+}
+
+.miniListContentRightPad {
+	padding-right: 45px !important;
+}
+
+.miniListName span{
+	margin: 0;
 }
 
 .showTitleTotal{
@@ -559,7 +571,7 @@ img{
     position: absolute;
 }
 
-.underLine li, #chatBar div{
+.underLine li{
 	border-bottom:thin solid #CCC;
 	padding:10px 20px;
 }
