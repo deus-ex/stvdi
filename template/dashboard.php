@@ -13,7 +13,7 @@
 		<div id="wrapper">
 
 			<div id="topBar" class="Colour-Blue">
-				<div class="logo floatLeft"><h2>stvdi</h2></div>
+				<div class="logo floatLeft"><h3>stvdi</h3></div>
                 <div class="thirtyThreePercent floatLeft"><input type="text" class="searchBar Colour-White" id="search" placeholder="Search Stvdi"/></div>
                 <ul class="topMenu floatRight">
                 	<li class="floatLeft">
@@ -22,11 +22,11 @@
                         <img src="../images/icons/down.png" class="userNavigator floatLeft">
                     </li>
                     <li class="floatLeft">
-                        <img src="../images/icons/black218.png" class="menuImg">
+                        <img src="../images/icons/black218.png" class="topImg">
                         <span class="topTitleTotal showTitleTotal floatRight Colour-Red text-White">6</span>
                     </li>
                     <li class="floatLeft">
-                        <img src="../images/icons/notifications.png" class="menuImg">
+                        <img src="../images/icons/notifications.png" class="topImg">
                         <span class="topTitleTotal showTitleTotal floatRight Colour-Red text-White">10</span>
                     </li>
                 </ul>
@@ -45,10 +45,10 @@
                     </ul>
                	<img src="../images/icons/a10.png" class="menuImg floatLeft"><div class="menuName menuNameSubRight clearFix">Results</div>
                 <img src="../images/icons/medical55.png" class="menuImg floatLeft"><div class="menuName menuNameSubRight clearFix">Courses</div>
-                <img src="../images/icons/live2.png" class="menuImg floatLeft"><div class="menuName clearFix">Discussion</div>
+                <img src="../images/icons/live2.png" class="menuImg floatLeft"><div class="menuName clearFix">Discussion<span class="menuTitleTotal showTitleTotal floatRight Colour-Blue text-White">7</span></div>
                 <img src="../images/icons/living1.png" class="menuImg floatLeft"><div class="menuName clearFix">Library</div>
                 <img src="../images/icons/person92.png" class="menuImg floatLeft"><div class="menuName clearFix">Activities</div>
-                <img src="../images/icons/communities.png" class="menuImg floatLeft"><div class="menuName clearFix">Communities</div>
+                <img src="../images/icons/communities.png" class="menuImg floatLeft"><div class="menuName clearFix">Communities<span class="menuTitleTotal showTitleTotal floatRight Colour-Blue text-White">15</span></div>
 			</div>
 			<!-- End #menuBar -->
 
@@ -56,11 +56,11 @@
     
                 <div id="chatBar" class="Colour-White floatRight">
                 	<div><input type="text" class="searchBar chatSearch Colour-White" id="search" placeholder="Search Chat"/></div>
-                    <img src="../community/images/users/Amarachi.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Amarachi Ezimoha</h6><span class="text-Green">Online</span></div>
-                    <img src="../community/images/users/Ama.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Rabiu Abdul</h6><span class="text-Green">Online</span></div>
-                    <img src="../community/images/users/Morphic.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Awelu Muhammad</h6><span class="text-Green">Online</span></div>
-                    <img src="../community/images/users/photo.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Demola Sule</h6><span class="text-Lgray">Offline</span></div>
-                    <img src="../community/images/users/peace.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Nkechi Ibeh</h6><span class="text-Green">Online</span></div>
+                    <img src="../community/images/users/Amarachi.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Amarachi Ezimoha</h6><span class="text-Green"><h7>Online</h7></span></div>
+                    <img src="../community/images/users/Ama.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Rabiu Abdul</h6><span class="text-Green"><h7>Online</h7></span></div>
+                    <img src="../community/images/users/Morphic.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Awelu Muhammad</h6><span class="text-Green"><h7>Online</h7></span></div>
+                    <img src="../community/images/users/photo.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Demola Sule</h6><span class="text-Lgray"><h7>Offline</h7></span></div>
+                    <img src="../community/images/users/peace.jpg" class="chatImg floatLeft"><div class="chatName clearFix text-Blue"><h6 class="strong">Nkechi Ibeh</h6><span class="text-Green"><h7>Online</h7></span></div>
                 </div>
                 <!-- End #chatBar -->
                 
@@ -75,7 +75,7 @@
                     
                         <div id="contentBody">
                             <div class="hundredPercent floatLeft">
-                                <div class="rowBody borderAll Colour-White">
+                                <div class="rowBody rowPadding borderAll Colour-White">
                                     <img src="../community/images/users/Amarachi.jpg" class="profileImg floatLeft dropShadow">
                                     <div class="uploadImgButton"><button><h7>Change Photo</h7></button></div>
 
@@ -95,8 +95,8 @@
                             </div>
                             
                             <div class="hundredPercent floatLeft">
-                                <div class="rowBody alertShow Colour-Cream text-Black">
-									<span class="floatLeft"><img src="../images/icons/error-triangle_9188.png" class="miniIcon"></span>
+                                <div class="rowBody rowPadding Colour-Cream text-Black">
+									<span class="floatLeft alertShow"><img src="../images/icons/error-triangle_9188.png"></span>
 									<span><h7>Amarachi Ezimoha, The system will be undergoing an upgrade by 10:00am. Please do logout and login in 2hours time. </h7></span>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                             <div class="sixtyPercent floatLeft">
                                 <div class="rowBody borderAll Colour-White">
                                 
-                                    <span class="thirtyThreePercent floatLeft">
+                                    <span class="thirtyThreePercent rowPadding floatLeft">
                                     	<div class="floatLeft">
                                             <div class="tailArrow text-Red">
                                                 <div class="tail-vertical Colour-Red"></div>
@@ -117,7 +117,7 @@
                                         </div>
                                     </span>
                                     
-                                    <span class="thirtyThreePercent floatLeft">
+                                    <span class="thirtyThreePercent rowPadding floatLeft">
                                     	<div class="floatLeft">
                                             <div class="tailArrow text-Green">
                                                 <div class="arrow-up"></div>
@@ -130,7 +130,7 @@
                                         </div>
                                     </span>
                                     
-                                    <span class="thirtyThreePercent floatLeft">
+                                    <span class="thirtyThreePercent rowPadding floatLeft">
                                     	<div class="floatLeft">
                                             <div class="tailArrow text-Orange">
                                                 <div class="arrow-up"></div>
@@ -143,18 +143,17 @@
                                         </div>
                                     </span>
                                     
-                                    <span class="hundredPercent"></span>
-                                    <div class="centerElement"><button class="curveAllEdges borderAll Colour-White">Other Scores</button></div>
+                                    <div class="centerElement rowPadding"><button class="curveAllEdges borderAll Colour-White">Other Scores</button></div>
                                 </div>
 
-                                <ul class="rowBody borderAll Colour-White">
+                                <ul class="rowBody borderAll Colour-White underLine">
                                 	<h4 class="bgImgTitle text-White">Get the Best of Quality Education</h4>
                                     <img src="../images/icons/facebook.png" class="socialImg">
                                     <img src="../images/backgrounds/high-school-classroom1-585x299.jpg" class="bgImg">
                                     <img src="../community/images/schools/biu.png" class="miniProfileImg floatLeft">
                                     <li class="miniListName clearFix text-Blue">
                                         <h6 class="strong">Word Of Faith Schools</h6>
-                                        <span class="text-Lgray">25 minutes ago</span>
+                                        <span class="text-Lgray"><h7>25 minutes ago</h7></span>
                                         <div class="featureWrapper">
                                             <span class="text-Lgray floatLeft"><img src="../images/icons/facebook38.png" class="">23 Likes</span>
                                             <span class="text-Lgray floatLeft"><img src="../images/icons/comment33.png" class="">10 Comments</span>
@@ -167,12 +166,12 @@
                                     <li class="miniListName miniListContent miniListContentRightPad clearFix">
                                     	<img src="../images/icons/twitter.png" class="socialImg">
                                         <h3><a href="#" class="text-Blue">#musicacademy</a> it 2015 guys, go out and give people joy and happiness. We’ve already started :) <a href="#" class="text-Blue">http://music.aca/2idPOv</a></h3>
-                                        <span class="text-Lgray">25 hours ago from web</span>
+                                        <span class="text-Lgray"><h7>25 hours ago from web</h7></span>
                                     </li>
                                     <img src="../community/images/users/Ama.jpg" class="miniProfileImg floatLeft">
                                   	<li class="miniListName clearFix text-Blue ">
                                     	<h6 class="strong">Rabiu Abdul</h6>
-                                        <span class="text-Lgray">@jawelu</span>
+                                        <span class="text-Lgray"><h7>@jawelu</h7></span>
                                         <div class="featureWrapper">
                                             <span class="text-Lgray floatLeft"><img src="../images/icons/favourite24.png" class="">12 Favourites</span>
                                             <span class="text-Lgray floatLeft"><img src="../images/icons/retweet.png" class="">10 Retweets</span>
@@ -186,29 +185,29 @@
                             <div class="fourtyPercent floatLeft">
                             
                                 <ul class="rowBody borderAll Colour-White underLine">
-                                	<img src="../images/icons/birthday.png" class="miniIcon floatLeft">
+                                	<img src="../images/icons/birthday.png" class="miniIconPadding floatLeft">
                                     <li class="clearFix"><h6 class="strong">Birthdays This Week<span class="showTitleTotal floatRight Colour-Gray text-White">6</span></h6></li>
                                     <img src="../community/images/users/Amarachi.jpg" class="miniProfileImg floatLeft">
-                                    <li class="miniListName clearFix text-Blue"><h6 class="strong">Amarachi Ezimoha</h6><span class="text-Lgray">SS2</span></li>
+                                    <li class="miniListName clearFix text-Blue"><h6 class="strong">Amarachi Ezimoha</h6><span class="text-Lgray"><h7>SS2</h7></span></li>
                                     <img src="../community/images/users/Ama.jpg" class="miniProfileImg floatLeft">
-                                    <li class="miniListName clearFix text-Blue"><h6 class="strong">Rabiu Abdul</h6><span class="text-Lgray">SS1</span></li>
+                                    <li class="miniListName clearFix text-Blue"><h6 class="strong">Rabiu Abdul</h6><span class="text-Lgray"><h7>SS1</h7></span></li>
                                     <img src="../community/images/users/Morphic.jpg" class="miniProfileImg floatLeft">
-                                    <li class="miniListName clearFix text-Blue"><h6 class="strong">Awelu Muhammad</h6><span class="text-Lgray">SS3</span></li>
+                                    <li class="miniListName clearFix text-Blue"><h6 class="strong">Awelu Muhammad</h6><span class="text-Lgray"><h7>SS3</h7></span></li>
                                     <li class="miniListName clearFix text-Blue"><h6 class="strong floatRight">View All</h6></li>
                                 </ul>
                                 
                                 <ul class="rowBody borderAll Colour-White underLine">
-                                	<img src="../images/icons/loud6.png" class="miniIcon floatLeft">
+                                	<img src="../images/icons/loud6.png" class="miniIconPadding floatLeft">
                                     <li class="clearFix"><h6 class="strong">Sponsored</h6></li>
                                     <img src="../ads/safe_image.png" class="adImg floatLeft">
                                     <li class="miniListName clearFix text-Blue">
                                         <h6 class="strong">Women's Necklaces</h6>
-                                        <span class="text-Lgray">Shop for your show stopping Necklaces on Jumia and discover the true meaning of effortless...</span>
+                                        <span class="text-Lgray"><h7>Shop for your show stopping Necklaces on Jumia and discover the true meaning of effortless...</h7></span>
                                     </li>
                                     <img src="../ads/projector.png" class="adImg floatLeft">
                                     <li class="miniListName clearFix text-Blue">
                                         <h6 class="strong">Projectors best deals!</h6>
-                                        <span class="text-Lgray">Projectors that fit in your BackPack! Order now and pay cash on delivery</span>
+                                        <span class="text-Lgray"><h7>Projectors that fit in your BackPack! Order now and pay cash on delivery</h7></span>
                                     </li>
                               </ul>
                                 
@@ -220,19 +219,19 @@
                                             <span class="floatRight"><img src="../images/icons/calendar179.png" class="miniIcon"></span>
                                         </div>
                                     </li>
-                                    <div class="arrow-down text-Red"></div>
+                                    <div class="arrow-down calenderArrow text-Red"></div>
                                     <li class="miniListName text-Blue menuNameSubRight arrow_box">
                                         <h6 class="strong">School Resumption</h6>
-                                        <span class="text-Lgray">The new academic session will be starting on...</span>
+                                        <span class="text-Lgray"><h7>The new academic session will be starting on...</h7></span>
                                     </li>
                                     <li class="miniListName text-Blue menuNameSubRight">
                                         <h6 class="strong">Books & Equipment Sales</h6>
-                                        <span class="text-Lgray">So many old books and equipments will...</span>
+                                        <span class="text-Lgray"><h7>So many old books and equipments will...</h7></span>
                                     </li>
                                 </ul>
                             </div>
                             
-                            <div class="hundredPercent floatLeft"><div class="rowBody"><h7></h7></div></div>
+                            <div class="hundredPercent floatLeft"><div class="rowBody rowPadding"><h7></h7></div></div>
                                 
                         </div>
                     	<!-- End #contentBody -->
