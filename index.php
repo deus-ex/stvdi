@@ -29,4 +29,23 @@
     php_error_reporting( $config['error_type'] );
   }
 
+  input( array(
+    'type' => 'text',
+    'name' => 'Username',
+    'title' => 'Enter Username',
+    'before' => '<p>Enter Username</p>',
+    'after' => '',
+
+    'label' => array(
+      'type' => 'TOP',
+      'for' => 'username'
+      ),
+    'attr' => array(
+      'disabled' => TRUE,
+      'value' => 'Enter Username',
+      'id' => 'username'
+    )
+  )
+);
+
 ?>
