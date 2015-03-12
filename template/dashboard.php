@@ -14,7 +14,7 @@
 
 			<div id="topBar" class="Colour-Blue">
 				<div class="logo floatLeft"><h3>stvdi</h3></div>
-                <div class="thirtyThreePercent floatLeft"><input type="text" class="searchBar Colour-White" id="search" placeholder="Search Stvdi"/></div>
+                <div class="thirtyThreePercent floatLeft"><input type="text" class="searchBar Colour-White" id="search" placeholder="Search Stvdi..."/></div>
                 <ul class="topMenu floatRight">
                 	<li class="floatLeft">
                     	<img src="../community/images/users/Amarachi.jpg" class="topProfileImg floatLeft">
@@ -34,17 +34,20 @@
 			<!-- End #topBar -->
 
 			<div id="menuBar" class="Colour-Black floatLeft">
-                <img src="../images/icons/speed11.png" class="menuImg floatLeft"><div class="menuName clearFix">Dashboard</div>
-                <img src="../images/icons/boy1.png" class="menuImg floatLeft"><div class="menuName menuNameSubRight clearFix">Student</div>
-                <img src="../images/icons/multiple25.png" class="menuImg floatLeft"><div class="menuName menuNameSubRight clearFix">Staff</div>
-                <img src="../images/icons/textile.png" class="menuImg floatLeft"><div class="menuName menuNameSubDown clearFix">Class</div>
+                <img src="../images/icons/speed11.png" class="menuImg floatLeft"><a href="dashboard.php"><div class="menuName menuNameActive clearFix">Dashboard</div></a>
+                <img src="../images/icons/boy1.png" class="menuImg floatLeft"><a href="students/index.php"><div class="menuName clearFix">Student</div></a>
+                <img src="../images/icons/multiple25.png" class="menuImg floatLeft"><div class="menuName clearFix">Staff</div>
+                <img src="../images/icons/textile.png" class="menuImg floatLeft">
+                <div class="menuDropDown">
+                    <div class="menuName menuNameSubDown clearFix">Class</div>
                     <ul class="menuSubName">
                         <li>Nursery</li>
                         <li>Primary</li>
                         <li>Secondary</li>
                     </ul>
-               	<img src="../images/icons/a10.png" class="menuImg floatLeft"><div class="menuName menuNameSubRight clearFix">Results</div>
-                <img src="../images/icons/medical55.png" class="menuImg floatLeft"><div class="menuName menuNameSubRight clearFix">Courses</div>
+                </div>
+               	<img src="../images/icons/a10.png" class="menuImg floatLeft"><div class="menuName clearFix">Results</div>
+                <img src="../images/icons/medical55.png" class="menuImg floatLeft"><div class="menuName clearFix">Courses</div>
                 <img src="../images/icons/live2.png" class="menuImg floatLeft"><div class="menuName clearFix">Discussion<span class="menuTitleTotal showTitleTotal floatRight Colour-Blue text-White">7</span></div>
                 <img src="../images/icons/living1.png" class="menuImg floatLeft"><div class="menuName clearFix">Library</div>
                 <img src="../images/icons/person92.png" class="menuImg floatLeft"><div class="menuName clearFix">Activities</div>
@@ -55,7 +58,7 @@
 			<div id="bodyWrapper">
     
                 <div id="chatBar" class="Colour-White floatRight">
-                	<div class="chatName"><input type="text" class="searchBar chatSearch" id="search" placeholder="Search Chat"/></div>
+                	<div class="chatName"><input type="text" class="searchBar chatSearch" id="search" placeholder="Search Chat..."/></div>
                     <img src="../community/images/users/Amarachi.jpg" class="chatImg floatLeft">
                     <div class="chatName clearFix text-Blue"><h6 class="strong">Amarachi Ezimoha</h6><span class="text-Green"><h7>Online</h7></span></div>
                     <img src="../community/images/users/Ama.jpg" class="chatImg floatLeft">
@@ -178,7 +181,7 @@
                                     	<h6 class="strong">Rabiu Abdul</h6>
                                         <span class="text-Lgray"><h7>@jawelu</h7></span>
                                         <div class="featureWrapper">
-                                            <span class="text-Lgray floatLeft"><img src="../images/icons/favourite24.png" class="">12 Favourites</span>
+                                            <span class="text-Lgray floatLeft"><img src="../images/icons/star178.png" class="">12 Favourites</span>
                                             <span class="text-Lgray floatLeft"><img src="../images/icons/retweet.png" class="">10 Retweets</span>
                                             <span class="text-Blue floatLeft"><img src="../images/icons/share29.png" class="">7 Shares</span>
                                         </div>
