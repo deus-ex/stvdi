@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8" />
-		<meta id="meta_referrer" content="default" name="referrer" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
 		<title>Stvdi: DashBoard</title>
 		<link href="../stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 		<link href="../stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
@@ -16,10 +16,13 @@
 				<div class="logo floatLeft"><h3>stvdi</h3></div>
                 <div class="thirtyThreePercent floatLeft"><input type="text" class="searchBar Colour-White" id="search" placeholder="Search Stvdi..."/></div>
                 <ul class="topMenu floatRight">
-                	<li class="floatLeft">
+                	<li class="floatLeft topMenuDropList underLine">
                     	<img src="../community/images/users/Amarachi.jpg" class="topProfileImg floatLeft">
-                      <h6 class="floatLeft topProfileName">Amarachi Ezimoha</h6>
-                        <img src="../images/icons/down.png" class="userNavigator floatLeft">
+                      	<h6 class="floatLeft topProfileName">Amarachi Ezimoha</h6>
+                        <ul class="borderAll">
+                            <li><a href="#"><h6>Settings</h6></a></li>
+                            <li><a href="../index.php"><h6>Logout</h6></a></li>
+                        </ul>
                     </li>
                     <li class="floatLeft">
                         <img src="../images/icons/black218.png" class="topImg">

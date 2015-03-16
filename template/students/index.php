@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8" />
-		<meta id="meta_referrer" content="default" name="referrer" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
 		<title>Stvdi: Students</title>
 		<link href="../../stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 		<link href="../../stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
@@ -16,10 +16,13 @@
 				<div class="logo floatLeft"><h3>stvdi</h3></div>
                 <div class="thirtyThreePercent floatLeft"><input type="text" class="searchBar Colour-White" id="search" placeholder="Search Stvdi..."/></div>
                 <ul class="topMenu floatRight">
-                	<li class="floatLeft">
+                	<li class="floatLeft topMenuDropList underLine">
                     	<img src="../../community/images/users/Amarachi.jpg" class="topProfileImg floatLeft">
-                      <h6 class="floatLeft topProfileName">Amarachi Ezimoha</h6>
-                        <img src="../../images/icons/down.png" class="userNavigator floatLeft">
+                      	<h6 class="floatLeft topProfileName">Amarachi Ezimoha</h6>
+                        <ul class="borderAll">
+                            <li><a href="#"><h6>Settings</h6></a></li>
+                            <li><a href="../../index.php"><h6>Logout</h6></a></li>
+                        </ul>
                     </li>
                     <li class="floatLeft">
                         <img src="../../images/icons/black218.png" class="topImg">
@@ -93,16 +96,16 @@
                             <div class="hundredPercent floatLeft">
                                 <ul class="rowBody strips borderAll Colour-White underLine">
                                     <li class="clearFix">
-                                    	<div class="filterButton floatLeft">
-											<h6 class="floatLeft strong">Filter</h6><img src="../../images/icons/arrow486.png" class="listItemIcon floatRight">
-                                            <ul class="listItemFilter borderAll">
-                                                <li><a href="#"><h7>Normal</h7></a></li>
-                                                <li><a href="#"><h7>Admission</h7></a></li>
-                                                <li><a href="#"><h7>Graduated</h7></a></li>
-                                                <li><a href="#"><h7>Student List</h7></a></li>
+                                        <div class="selectMenuWrapper floatLeft underLine Colour-Lgray">
+                                            <input id="filter" name="filter" type="text" autocomplete="off" readonly placeholder="Filter" class="selectMenu Colour-Lgray">
+                                            <ul class="borderAll">
+                                                <li><a href="#"><h6>Normal</h6></a></li>
+                                                <li><a href="#"><h6>Admission</h6></a></li>
+                                                <li><a href="#"><h6>Graduated</h6></a></li>
+                                                <li><a href="#"><h6>Student List</h6></a></li>
                                             </ul>
                                         </div>
-                                        <button class="floatRight Colour-Green text-White curveAllEdges">Add New Student</button>
+                                        <button class="floatRight dropShadow Colour-Green text-White curveAllEdges">Add New Student</button>
                                   	</li>
                                     <li class="clearFix">
                                     	<div class="floatLeft">
@@ -119,9 +122,8 @@
                                   </li>
                                     <li class="clearFix text-Black">
                                     	<div class="tenPercent floatLeft">
-                                            <div class="checkBox">
-                                                <input type="checkbox" value="None" id="checkBox1" name="check1" /><label for="checkBox1"></label>
-                                            </div>
+                                            <input id="checkbox" type="checkbox" name="checkbox" value="1">
+                                            <label for="checkbox"><span><span></span></span><h6></h6></label>
                                         </div>
                                     	<div class="twentyFivePercent floatLeft"><h6 class="strong">Student Name</h6></div>
                                     	<div class="tenPercent floatLeft"><h6 class="strong">Age</h6></div>
@@ -132,9 +134,8 @@
                                     </li>
                                     <li class="clearFix Colour-Yellow">
                                     	<div class="tenPercent floatLeft">
-                                            <div class="checkBox">
-                                                <input type="checkbox" value="None" id="checkBox2" name="check2" /><label for="checkBox2"></label>
-                                            </div>
+                                            <input id="checkbox1" type="checkbox" name="checkbox1" value="1">
+                                            <label for="checkbox1"><span><span></span></span><h6></h6></label>
                                         </div>
                                     	<div class="twentyFivePercent floatLeft">
                                         	<img src="../../images/icons/star138.png" class="listItemIcon floatLeft">
@@ -151,18 +152,17 @@
                                             <div class="listDropMenuContainer">
                                                 <img src="../../images/icons/menu48.png" class="listItemIcon listDropMenuMore">
                                                 <ul class="listItemMenu borderAll">
-                                                    <li><a href="#"><h7>Fees</h7></a></li>
-                                                    <li><a href="#"><h7>Promotion</h7></a></li>
-                                                    <li><a href="#"><h7>Status</h7></a></li>
+                                                    <li><a href="#"><h6>Fees</h6></a></li>
+                                                    <li><a href="#"><h6>Promotion</h6></a></li>
+                                                    <li><a href="#"><h6>Status</h6></a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </li>
                                     <li class="clearFix">
                                     	<div class="tenPercent floatLeft">
-                                            <div class="checkBox">
-                                                <input type="checkbox" value="None" id="checkBox3" name="check3" /><label for="checkBox3"></label>
-                                            </div>
+                                            <input id="checkbox2" type="checkbox" name="checkbox2" value="1">
+                                            <label for="checkbox2"><span><span></span></span><h6></h6></label>
                                         </div>
                                     	<div class="twentyFivePercent floatLeft">
                                         	<img src="../../images/icons/star178.png" class="listItemIcon floatLeft">
@@ -179,18 +179,17 @@
                                             <div class="listDropMenuContainer">
                                                 <img src="../../images/icons/menu48.png" class="listItemIcon listDropMenuMore">
                                                 <ul class="listItemMenu borderAll">
-                                                    <li><a href="#"><h7>Fees</h7></a></li>
-                                                    <li><a href="#"><h7>Promotion</h7></a></li>
-                                                    <li><a href="#"><h7>Status</h7></a></li>
+                                                    <li><a href="#"><h6>Fees</h6></a></li>
+                                                    <li><a href="#"><h6>Promotion</h6></a></li>
+                                                    <li><a href="#"><h6>Status</h6></a></li>
                                                 </ul>
                                             </div>
                                       </div>
                                     </li>
                                     <li class="clearFix">
                                     	<div class="tenPercent floatLeft">
-                                            <div class="checkBox">
-                                                <input type="checkbox" value="None" id="checkBox4" name="check4" /><label for="checkBox4"></label>
-                                            </div>
+                                            <input id="checkbox3" type="checkbox" name="checkbox3" value="1">
+                                            <label for="checkbox3"><span><span></span></span><h6></h6></label>
                                         </div>
                                     	<div class="twentyFivePercent floatLeft">
                                         	<img src="../../images/icons/star178.png" class="listItemIcon floatLeft">
@@ -207,9 +206,9 @@
                                             <div class="listDropMenuContainer">
                                                 <img src="../../images/icons/menu48.png" class="listItemIcon listDropMenuMore">
                                                 <ul class="listItemMenu borderAll">
-                                                    <li><a href="#"><h7>Fees</h7></a></li>
-                                                    <li><a href="#"><h7>Promotion</h7></a></li>
-                                                    <li><a href="#"><h7>Status</h7></a></li>
+                                                    <li><a href="#"><h6>Fees</h6></a></li>
+                                                    <li><a href="#"><h6>Promotion</h6></a></li>
+                                                    <li><a href="#"><h6>Status</h6></a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -234,6 +233,17 @@
 
 		</div>
 		<!-- End #wrapper -->
-
+		
+        <div id="modalBg" class="transparency Colour-Black"></div>
+        <div class="modalWrapper">
+        	<div class="modalContainer">
+            	<!-- The modalContent class div represents the div holding the info of the modal page to be displayed.
+                it's css is inputed in the screen.css style sheet, this style should be applied to the page that is 
+                to be displayed in this modalContainer class div-->
+                <?php include("add-student.php"); ?>
+            </div>
+        </div> 
+        <!-- End #modalBg and modalWrapper class -->
+        
 	</body>
 </html>
