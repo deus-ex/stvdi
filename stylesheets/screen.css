@@ -182,8 +182,8 @@ img{
 	width:100%;
 	height:100%;
 	z-index:100;
-/*	display:none;
-*/}
+	display:none;
+}
 
 .modalWrapper, .loginWrapper{
 	position:absolute;
@@ -199,8 +199,8 @@ img{
 }
 
 .modalWrapper{
-/*    display: none !important;
-*/}
+    display: none !important;
+}
 
 .modalContainer, .loginContainer {
     display: table-cell;
@@ -330,7 +330,11 @@ img{
 }
 
 .topMenu{
+	position:absolute;
 	margin:0 20px 0 0;
+	padding:10px 0 0 0;
+	top:0;
+	right:0;
 }
 
 .topMenu li{
@@ -340,14 +344,17 @@ img{
 
 .topMenuDropList{
 	position:relative;
-	padding:0 30px 0 0;
-    background: url(../images/icons/up.png) center right no-repeat;
+	height:40px;
+	margin:-10px 0 0 0 !important;
+	padding:10px 30px 0 0;
+    background: url(../images/icons/up.png) right top 10px no-repeat;
     background-size: 30px 30px;
 }
 
 .topMenuDropList:hover{
-	padding:0 30px 0 0;
-    background: url(../images/icons/down.png) center right no-repeat;
+	padding:10px 30px 0 0;
+	border-left:2px solid #004980;
+    background:#004980 url(../images/icons/down.png) right top 10px no-repeat;
     background-size: 30px 30px;
 }
 
@@ -358,15 +365,18 @@ img{
 .topMenuDropList:hover > ul {
 	display: block;
 	right:0;
+	width:100%;
 	position:absolute;
 	background:#FFF;
-	margin: 30px 0 0 0;
+	margin: 40px 0 0 0;
 	z-index:50;
+	
 }
 
 .topMenuDropList:hover > ul > li { 
 	background:#FFF !important;
 	margin:0;
+	padding:0 0 10px 0;
 /*	cursor: pointer;
     cursor: hand;
 */}
@@ -387,7 +397,7 @@ img{
 .topProfileImg{
 	width:30px;
 	height:30px;
-	margin:0 10px 0 0;
+	margin:0 10px 0 5px;
 	border-radius:15px;
 	cursor: pointer;
     cursor: hand;
@@ -780,6 +790,10 @@ img{
 
 .calenderTitleWrapper span:last-child{
 	margin:0;
+}
+
+.calenderTitleWrapper span b{
+	display:block;
 }
 
 .calenderArrow{

@@ -15,13 +15,16 @@
 			<div id="topBar" class="Colour-Blue">
 				<div class="logo floatLeft"><h3>stvdi</h3></div>
                 <div class="thirtyThreePercent floatLeft"><input type="text" class="searchBar Colour-White" id="search" placeholder="Search Stvdi..."/></div>
-                <ul class="topMenu floatRight">
+                <ul class="topMenu">
                 	<li class="floatLeft topMenuDropList underLine">
                     	<img src="../../community/images/users/Amarachi.jpg" class="topProfileImg floatLeft">
                       	<h6 class="floatLeft topProfileName">Amarachi Ezimoha</h6>
                         <ul class="borderAll">
-                            <li><a href="#"><h6>Settings</h6></a></li>
-                            <li><a href="../../index.php"><h6>Logout</h6></a></li>
+                            <li class="profile"><a href="#"><img src="../../images/icons/male80.png" class="menuImg"><h6>Profile</h6></a></li>
+                            <li class="activity"><a href="#"><img src="../../images/icons/time36.png" class="menuImg"><h6>Activity Logs</h6></a></li>
+                            <li class="help"><a href="#"><img src="../../images/icons/question55.png" class="menuImg"><h6>Help Centre</h6></a></li>
+                            <li class="settings"><a href="#"><img src="../../images/icons/settings38.png" class="menuImg"><h6>Settings</h6></a></li>
+                            <li class="signout"><a href="../index.php"><img src="../../images/icons/sign4.png" class="menuImg"><h6>Sign Out</h6></a></li>
                         </ul>
                     </li>
                     <li class="floatLeft">
