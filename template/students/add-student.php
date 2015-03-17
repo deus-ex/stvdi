@@ -35,7 +35,7 @@
                         <div><input id="mname" name="mname" type="text" autocomplete="off" placeholder="Middle name" class="Colour-Lgray"></div>
                         <div><input id="lname" name="lname" type="text" autocomplete="off" placeholder="* Last name" class="errorForm"></div>
                         <div>
-                            <span><h6 class="strong">* Date of Birth</h6></span>
+                            <span><h6>* Date of Birth</h6></span>
                             <span>
                                 <b class="selectMenuWrapper underLine Colour-Lgray">
                                     <input id="day" name="day" type="text" autocomplete="off" readonly placeholder="Day" class="selectMenuCalendar Colour-Lgray">                                   
@@ -73,7 +73,7 @@
                             </span>
                         </div>
                         <div>
-                            <span><h6 class="strong">* Gender</h6></span>
+                            <span><h6>* Gender</h6></span>
                             <span>
                                 <b>
                                     <input id="gender" type="radio" name="gender" value="0">
@@ -132,7 +132,7 @@
                 <div class="thirtyThreePercent floatLeft">
                     <ul class="listItem">
                         <div>
-                            <span><h6 class="strong">On Scholarship</h6></span>
+                            <span><h6>On Scholarship</h6></span>
                             <span>
                                 <b>
                                     <input id="scholar" type="radio" name="scholarship" value="0">
