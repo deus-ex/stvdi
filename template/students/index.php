@@ -24,7 +24,7 @@
                             <li class="activity"><a href="#"><img src="../../images/icons/time36.png" class="menuImg"><h6>Activity Logs</h6></a></li>
                             <li class="help"><a href="#"><img src="../../images/icons/question55.png" class="menuImg"><h6>Help Centre</h6></a></li>
                             <li class="settings"><a href="#"><img src="../../images/icons/settings38.png" class="menuImg"><h6>Settings</h6></a></li>
-                            <li class="signout"><a href="../index.php"><img src="../../images/icons/sign4.png" class="menuImg"><h6>Sign Out</h6></a></li>
+                            <li class="signout"><a href="../../index.php"><img src="../../images/icons/sign4.png" class="menuImg"><h6>Sign Out</h6></a></li>
                         </ul>
                     </li>
                     <li class="floatLeft">

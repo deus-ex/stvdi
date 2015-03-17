@@ -347,14 +347,14 @@ img{
 	height:40px;
 	margin:-10px 0 0 0 !important;
 	padding:10px 30px 0 0;
-    background: url(../images/icons/up.png) right top 10px no-repeat;
+    background: url(../images/icons/down.png) right top 10px no-repeat;
     background-size: 30px 30px;
 }
 
 .topMenuDropList:hover{
 	padding:10px 30px 0 0;
 	border-left:2px solid #004980;
-    background:#004980 url(../images/icons/down.png) right top 10px no-repeat;
+    background:#004980 url(../images/icons/up.png) right top 10px no-repeat;
     background-size: 30px 30px;
 }
 
@@ -661,7 +661,7 @@ img{
 }
 
 .adImg {
-	margin: 10px 20px;
+	margin: 0 20px;
 	width:80px;
 	height:60px;
 	text-align:center;
@@ -1444,7 +1444,7 @@ input[type=radio]:not(old):checked +  label > span > span{
     background-image: -ms-linear-gradient(top, #F5F5F5, #F1F1F1); /* For pre-releases of IE 10*/
     background-image: -o-linear-gradient(top, #F5F5F5, #F1F1F1); /* For old Opera (11.1 to 12.0) */ 
     background-image: linear-gradient(to bottom, #F5F5F5, #F1F1F1); /* Standard syntax; must be last */
-    background: url(../images/icons/arrow487.png) center right 5px no-repeat;
+    background: url(../images/icons/arrow486.png) center right 5px no-repeat;
     background-size: 15px 15px;
 	cursor: pointer;
     cursor: hand;
@@ -1456,7 +1456,7 @@ input[type=radio]:not(old):checked +  label > span > span{
 }
 
 .selectMenu:hover{
-    background: url(../images/icons/arrow486.png) center right 5px no-repeat;
+    background: url(../images/icons/arrow487.png) center right 5px no-repeat;
     background-size: 15px 15px;
 }
 

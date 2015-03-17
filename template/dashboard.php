@@ -215,16 +215,16 @@
                                     <li class="clearFix"><h6 class="strong">Sponsored</h6></li>
                                     <li class="miniListName clearFix text-Blue">
                                     	<img src="../ads/safe_image.png" class="adImg floatLeft">
-                                        <span class="text-Lgray floatLeft">
+                                        <span class="text-Lgray">
                                             <h6 class="strong">Women's Necklaces</h6>
-                                            <h7>Shop for your show stopping Necklaces on Jumia and discover the true meaning of effortless...</h7>
+                                            <h7>Shop for your show stopping Necklaces on Jumia...</h7>
                                         </span>
                                     </li>
                                     <li class="miniListName clearFix text-Blue">
                                         <img src="../ads/projector.png" class="adImg floatLeft">
-                                        <span class="text-Lgray floatLeft">
+                                        <span class="text-Lgray">
                                             <h6 class="strong">Projectors best deals!</h6>
-                                            <h7>Projectors that fit in your BackPack! Order now and pay cash on delivery</h7>
+                                            <h7>Projectors that fit in your BackPack! Order now ...</h7>
                                         </span>
                                     </li>
                               </ul>
