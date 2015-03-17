@@ -11,7 +11,10 @@
 	<body>
 
 		<div class="modalContent text-Black Colour-White" style="max-width:950px; width:100%;">
-            <div class="hundredPercent formTitle Colour-Blue text-White"><h3 class="strong">Add New Student</h3></div>
+            <div class="hundredPercent formTitle Colour-Blue text-White">
+				<h3 class="strong">Add New Student</h3>
+				<img src="../../images/icons/delete31.png" class="miniIcon floatRight">
+            </div>
         	<div class="formBody">
                 <div class="hundredPercent formMargin"><h6>Complete the required field below to create student details</h6></div>
                 <div class="hundredPercent">
@@ -32,7 +35,7 @@
                         <div><input id="mname" name="mname" type="text" autocomplete="off" placeholder="Middle name" class="Colour-Lgray"></div>
                         <div><input id="lname" name="lname" type="text" autocomplete="off" placeholder="* Last name" class="errorForm"></div>
                         <div>
-                            <span><h6>* Date of Birth</h6></span>
+                            <span><h6 class="strong">* Date of Birth</h6></span>
                             <span>
                                 <b class="selectMenuWrapper underLine Colour-Lgray">
                                     <input id="day" name="day" type="text" autocomplete="off" readonly placeholder="Day" class="selectMenuCalendar Colour-Lgray">                                   
@@ -70,7 +73,7 @@
                             </span>
                         </div>
                         <div>
-                            <span><h6>* Gender</h6></span>
+                            <span><h6 class="strong">* Gender</h6></span>
                             <span>
                                 <b>
                                     <input id="gender" type="radio" name="gender" value="0">
@@ -129,7 +132,7 @@
                 <div class="thirtyThreePercent floatLeft">
                     <ul class="listItem">
                         <div>
-                            <span><h6>On Scholarship</h6></span>
+                            <span><h6 class="strong">On Scholarship</h6></span>
                             <span>
                                 <b>
                                     <input id="scholar" type="radio" name="scholarship" value="0">
@@ -182,8 +185,15 @@
                         <div><button class="dropShadow Colour-Blue text-White curveAllEdges">Add Student</button></div>
                     </ul>
                 </div>
-                <div class="thirtyThreePercent floatLeft">sdfsdfsd</div>
-                <div class="hundredPercent">
+                <div class="thirtyThreePercent floatLeft">
+                	<div class="formTips Colour-Lgray borderAll">
+                    	<ul>
+                        	<li>Tips:</li>
+                        	<li class="formTipsName"><strong>Field Name:</strong> Last name</li>
+                        	<li>The field is required, it must not be empty</li>
+                        	<li>It must not contain numbers or any special character</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 		</div>

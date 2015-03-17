@@ -182,8 +182,8 @@ img{
 	width:100%;
 	height:100%;
 	z-index:100;
-	display:none;
-}
+/*	display:none;
+*/}
 
 .modalWrapper, .loginWrapper{
 	position:absolute;
@@ -199,8 +199,8 @@ img{
 }
 
 .modalWrapper{
-    display: none !important;
-}
+/*    display: none !important;
+*/}
 
 .modalContainer, .loginContainer {
     display: table-cell;
@@ -209,7 +209,7 @@ img{
 }
 
 .modalContent{
-	margin:0 auto;
+	margin:10px auto;
 	background:#FFF;
 	height:auto;
     text-align: left;
@@ -819,6 +819,31 @@ img{
     padding: 0 0 0 20px;
 }
 
+.formTips {
+    padding: 10px;
+}
+
+.formTips ul li{
+	display:list-item;
+	list-style: square outside;
+  	font-size:0.750em;
+	margin:0 0 10px 10px;
+}
+
+.formTips ul li:first-child{
+	list-style:none;
+	list-style-type:none;
+  	font-size:1.000em;
+	font-weight:bold;
+	margin:0 0 10px 0;
+}
+
+.formTips ul .formTipsName{
+	list-style:none;
+	list-style-type:none;
+	margin:0 0 10px 0;
+}
+
 .profileImg, .profileList{
 	position:relative;
 	margin:0 20px 0 0;
@@ -1291,8 +1316,8 @@ strong, .strong{font-weight:bold; }
 --------------------------------- */
 
 form{
-	float:left;
 	width:100%;
+	text-align: left;
 }
 
 .errorForm {

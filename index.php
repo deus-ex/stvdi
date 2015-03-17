@@ -74,8 +74,8 @@
                                 <div class="spanFull"><h3 class="strong">STVDI</h3></div>
                                 <div class="spanFull"><h4>Login to your Stvdi account</h4></div>
                                 <form id="record" method="post" action="template/dashboard.php">
-                                <div class="spanFull hundredPercent selectMenu underLine floatLeft">
-                                    <h6 class="floatLeft strong">Select Login Type...</h6>
+                                <div class="spanFull selectMenuWrapper underLine">
+                                    <input id="selectType" name="selectType" type="text" autocomplete="off" readonly placeholder="Select Login Type..." class="selectMenu Colour-Lgray">
                                     <ul class="borderAll">
                                         <li><a href="#"><h6>Student</h6></a></li>
                                         <li><a href="#"><h6>Staff</h6></a></li>
@@ -84,8 +84,9 @@
                                 </div>
                                 <div class="spanFull"><input id="user" name="user" type="text" autocomplete="off" placeholder="Email / Username" class="Colour-White"></div>
                                 <div class="spanFull"><input id="pass" name="pass" type="password" autocomplete="off"  placeholder="Password" class="Colour-White"></div>
-                                <div class="spanFull checkBox">
-                                    <input type="checkbox" value="None" id="checkBox1" name="check1" /><label for="checkBox1"><b class="strong">Keep me signed in</b></label> 
+                                <div class="spanFull">
+                                    <input id="signedin" type="checkbox" name="signedin" value="1">
+                                    <label for="signedin"><span><span></span></span><h6 class="strong">Keep me signed in</h6></label>
                                 </div>
                                 <div class="spanFull"><button class="text-White Colour-Blue dropShadow">Sign In</button></div>
                                 <div class="spanFull loginLinks"><a href="#"><h6>Can't access my account?</h6></a></div>
