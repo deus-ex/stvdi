@@ -29,7 +29,7 @@
     php_error_reporting( $config['error_type'] );
   }
 
-  input( array(
+  input( $one = array(
     'type' => 'text',
     'name' => 'Username',
     'title' => 'Enter Username',
@@ -46,6 +46,9 @@
       'id' => 'username'
     )
   )
+
 );
+
+$database = new Database();
 
 ?>
