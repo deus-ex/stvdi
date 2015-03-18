@@ -209,7 +209,7 @@ img{
 }
 
 .modalContent{
-	margin:0 auto;
+	margin:10px auto;
 	background:#FFF;
 	height:auto;
     text-align: left;
@@ -330,7 +330,11 @@ img{
 }
 
 .topMenu{
+	position:absolute;
 	margin:0 20px 0 0;
+	padding:10px 0 0 0;
+	top:0;
+	right:0;
 }
 
 .topMenu li{
@@ -340,14 +344,17 @@ img{
 
 .topMenuDropList{
 	position:relative;
-	padding:0 30px 0 0;
-    background: url(../images/icons/up.png) center right no-repeat;
+	height:40px;
+	margin:-10px 0 0 0 !important;
+	padding:10px 30px 0 0;
+    background: url(../images/icons/down.png) right top 10px no-repeat;
     background-size: 30px 30px;
 }
 
 .topMenuDropList:hover{
-	padding:0 30px 0 0;
-    background: url(../images/icons/down.png) center right no-repeat;
+	padding:10px 30px 0 0;
+	border-left:2px solid #004980;
+    background:#004980 url(../images/icons/up.png) right top 10px no-repeat;
     background-size: 30px 30px;
 }
 
@@ -358,15 +365,18 @@ img{
 .topMenuDropList:hover > ul {
 	display: block;
 	right:0;
+	width:100%;
 	position:absolute;
 	background:#FFF;
-	margin: 30px 0 0 0;
+	margin: 40px 0 0 0;
 	z-index:50;
+	
 }
 
 .topMenuDropList:hover > ul > li { 
 	background:#FFF !important;
 	margin:0;
+	padding:0 0 10px 0;
 /*	cursor: pointer;
     cursor: hand;
 */}
@@ -387,7 +397,7 @@ img{
 .topProfileImg{
 	width:30px;
 	height:30px;
-	margin:0 10px 0 0;
+	margin:0 10px 0 5px;
 	border-radius:15px;
 	cursor: pointer;
     cursor: hand;
@@ -651,7 +661,7 @@ img{
 }
 
 .adImg {
-	margin: 10px 20px;
+	margin: 0 20px;
 	width:80px;
 	height:60px;
 	text-align:center;
@@ -782,6 +792,10 @@ img{
 	margin:0;
 }
 
+.calenderTitleWrapper span b{
+	display:block;
+}
+
 .calenderArrow{
 	margin:0 0 0 20px;
 }
@@ -817,6 +831,31 @@ img{
 
 .formBody {
     padding: 0 0 0 20px;
+}
+
+.formTips {
+    padding: 10px;
+}
+
+.formTips ul li{
+	display:list-item;
+	list-style: square outside;
+  	font-size:0.750em;
+	margin:0 0 10px 10px;
+}
+
+.formTips ul li:first-child{
+	list-style:none;
+	list-style-type:none;
+  	font-size:1.000em;
+	font-weight:bold;
+	margin:0 0 10px 0;
+}
+
+.formTips ul .formTipsName{
+	list-style:none;
+	list-style-type:none;
+	margin:0 0 10px 0;
 }
 
 .profileImg, .profileList{
@@ -1291,8 +1330,8 @@ strong, .strong{font-weight:bold; }
 --------------------------------- */
 
 form{
-	float:left;
 	width:100%;
+	text-align: left;
 }
 
 .errorForm {
@@ -1405,7 +1444,7 @@ input[type=radio]:not(old):checked +  label > span > span{
     background-image: -ms-linear-gradient(top, #F5F5F5, #F1F1F1); /* For pre-releases of IE 10*/
     background-image: -o-linear-gradient(top, #F5F5F5, #F1F1F1); /* For old Opera (11.1 to 12.0) */ 
     background-image: linear-gradient(to bottom, #F5F5F5, #F1F1F1); /* Standard syntax; must be last */
-    background: url(../images/icons/arrow487.png) center right 5px no-repeat;
+    background: url(../images/icons/arrow486.png) center right 5px no-repeat;
     background-size: 15px 15px;
 	cursor: pointer;
     cursor: hand;
@@ -1417,7 +1456,7 @@ input[type=radio]:not(old):checked +  label > span > span{
 }
 
 .selectMenu:hover{
-    background: url(../images/icons/arrow486.png) center right 5px no-repeat;
+    background: url(../images/icons/arrow487.png) center right 5px no-repeat;
     background-size: 15px 15px;
 }
 

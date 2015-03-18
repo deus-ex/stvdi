@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8" />
-		<meta id="meta_referrer" content="default" name="referrer" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
 		<title>Stvdi: DashBoard</title>
 		<link href="../stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 		<link href="../stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
@@ -15,11 +15,17 @@
 			<div id="topBar" class="Colour-Blue">
 				<div class="logo floatLeft"><h3>stvdi</h3></div>
                 <div class="thirtyThreePercent floatLeft"><input type="text" class="searchBar Colour-White" id="search" placeholder="Search Stvdi..."/></div>
-                <ul class="topMenu floatRight">
-                	<li class="floatLeft">
+                <ul class="topMenu">
+                	<li class="floatLeft topMenuDropList underLine">
                     	<img src="../community/images/users/Amarachi.jpg" class="topProfileImg floatLeft">
-                      <h6 class="floatLeft topProfileName">Amarachi Ezimoha</h6>
-                        <img src="../images/icons/down.png" class="userNavigator floatLeft">
+                      	<h6 class="floatLeft topProfileName">Amarachi Ezimoha</h6>
+                        <ul class="borderAll">
+                            <li class="profile"><a href="#"><img src="../images/icons/male80.png" class="menuImg"><h6>Profile</h6></a></li>
+                            <li class="activity"><a href="#"><img src="../images/icons/time36.png" class="menuImg"><h6>Activity Logs</h6></a></li>
+                            <li class="help"><a href="#"><img src="../images/icons/question55.png" class="menuImg"><h6>Help Centre</h6></a></li>
+                            <li class="settings"><a href="#"><img src="../images/icons/settings38.png" class="menuImg"><h6>Settings</h6></a></li>
+                            <li class="signout"><a href="../index.php"><img src="../images/icons/sign4.png" class="menuImg"><h6>Sign Out</h6></a></li>
+                        </ul>
                     </li>
                     <li class="floatLeft">
                         <img src="../images/icons/black218.png" class="topImg">
@@ -194,7 +200,7 @@
                             
                                 <ul class="rowBody borderAll Colour-White underLine">
                                 	<img src="../images/icons/birthday.png" class="miniIconPadding floatLeft">
-                                    <li class="clearFix"><h6 class="strong">Birthdays This Week<span class="showTitleTotal floatRight Colour-Gray text-White">6</span></h6></li>
+                                    <li class="clearFix"><h6 class="strong">Birthdays This Week</h6><span class="showTitleTotal floatRight Colour-Gray text-White">6</span></li>
                                     <img src="../community/images/users/Amarachi.jpg" class="miniProfileImg floatLeft">
                                     <li class="miniListName clearFix text-Blue"><h6 class="strong">Amarachi Ezimoha</h6><span class="text-Lgray"><h7>SS2</h7></span></li>
                                     <img src="../community/images/users/Ama.jpg" class="miniProfileImg floatLeft">
@@ -207,15 +213,19 @@
                                 <ul class="rowBody borderAll Colour-White underLine">
                                 	<img src="../images/icons/loud6.png" class="miniIconPadding floatLeft">
                                     <li class="clearFix"><h6 class="strong">Sponsored</h6></li>
-                                    <img src="../ads/safe_image.png" class="adImg floatLeft">
                                     <li class="miniListName clearFix text-Blue">
-                                        <h6 class="strong">Women's Necklaces</h6>
-                                        <span class="text-Lgray"><h7>Shop for your show stopping Necklaces on Jumia and discover the true meaning of effortless...</h7></span>
+                                    	<img src="../ads/safe_image.png" class="adImg floatLeft">
+                                        <span class="text-Lgray">
+                                            <h6 class="strong">Women's Necklaces</h6>
+                                            <h7>Shop for your show stopping Necklaces on Jumia...</h7>
+                                        </span>
                                     </li>
-                                    <img src="../ads/projector.png" class="adImg floatLeft">
                                     <li class="miniListName clearFix text-Blue">
-                                        <h6 class="strong">Projectors best deals!</h6>
-                                        <span class="text-Lgray"><h7>Projectors that fit in your BackPack! Order now and pay cash on delivery</h7></span>
+                                        <img src="../ads/projector.png" class="adImg floatLeft">
+                                        <span class="text-Lgray">
+                                            <h6 class="strong">Projectors best deals!</h6>
+                                            <h7>Projectors that fit in your BackPack! Order now ...</h7>
+                                        </span>
                                     </li>
                               </ul>
                                 
@@ -223,7 +233,10 @@
                                     <li class="calenderTitle">
                                     	<div class="calenderTitleWrapper Colour-Red text-White">
                                        		<span class="floatLeft"><h2>20</h2></span>
-                                            <span class="floatLeft"><h6 class="strong">Tuesday</h6><span>January 2015</span></span>
+                                            <span class="floatLeft">
+                                                <b><h6 class="strong">Tuesday</h6></b>
+                                                <b><h5>January 2015</h5></b>
+                                            </span>
                                             <span class="floatRight"><img src="../images/icons/calendar179.png" class="miniIcon"></span>
                                         </div>
                                     </li>
