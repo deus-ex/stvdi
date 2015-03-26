@@ -24,10 +24,10 @@
     */
 
     // Database type
-    'db_type' => 'mysqli',
+    'db_type' => 'mysql',
 
     // Database name
-    'db_name' => 'stvdi_db',
+    'db_name' => 'sv_stvdi',
 
     // Database username
     'db_user' => 'root',
@@ -47,6 +47,11 @@
     // Database table prefix
     'db_prefix' => 'sv_',
 
+    // PDO (PHP Database Object)
+    // TRUE if you want to use PDO
+    // FALSE if you don't want to user it
+    'PDO' => TRUE,
+
     /*
     *
     * Cache information
@@ -54,7 +59,7 @@
     */
 
     // Set cache (TRUE/FALSE)
-    'cache' => FALSE,
+    'cache' => TRUE,
 
     // Set cache age, how long cache would last @default: 5mins
     'cache_age' => 300,
