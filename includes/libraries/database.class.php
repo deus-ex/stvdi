@@ -18,6 +18,7 @@
   *
   **/
 
+
   class Database {
 
     /**
@@ -194,11 +195,11 @@
     *
     * Count of affected rows by previous query
     *
-    * @access private
+    * @access public
     * @var integer
     *
     **/
-    private $affectedRows = 0;
+    public $affectedRows = 0;
 
     /**
     *
@@ -302,13 +303,23 @@
 
     /**
     *
-    * Cache unique name
+    * Cache name
     *
     * @access public
     * @var string
     *
     **/
     var $cacheName = NULL;
+
+    /**
+    *
+    * Cache Unique ID
+    *
+    * @access public
+    * @var string
+    *
+    **/
+    var $cacheID = NULL;
 
     /**
     *
@@ -333,7 +344,7 @@
 
     /**
     *
-    * Debugging
+    * debugging
     *
     * @access private
     * @var bool
@@ -343,17 +354,17 @@
 
     /**
     *
-    * Debugging
+    * debugging
     *
     * @access public
     * @var array
     *
     **/
-    var $queryDebug = array();
+    var $querydebug = array();
 
     /**
     *
-    * Debugging start time
+    * debugging start time
     *
     * @access public
     * @var integer
@@ -372,7 +383,7 @@
     **/
 
     public function __construct( $config = array() ) {
-      $this->logData = "Database() Initialized<br />";
+      $this->logData = $this->log_string( "Database() Initialized" );
       $this->dbType = ( isset( $config['db_type'] ) ) ? $config['db_type'] : 'mysqli';
       $this->dbHost = ( isset( $config['db_host'] ) ) ? $config['db_host'] : 'localhost';
       $this->dbName = ( isset( $config['db_name'] ) ) ? $config['db_name'] : '';
@@ -387,7 +398,7 @@
       $this->cacheDir = ( isset( $config['cache_path'] ) ) ? $config['cache_path'] : $this->cacheDir;
       $this->debug = ( isset( $config['debug'] ) ) ? $config['debug'] : $this->debug;
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
         $this->connect();
       }
     }
@@ -400,7 +411,7 @@
     *
     **/
     public function connect() {
-      $this->logData .= "connect() called<br />";
+      $this->logData .= $this->log_string( "connect() called" );
 
       if ( ! $this->PDO ) {
 
@@ -413,7 +424,7 @@
             }
 
             if ( !$this->conn ) {
-              $this->logData .= "mysql_connect() failed<br />";
+              $this->logData .= $this->log_string( "mysql_connect() failed", "error" );
             }
             break;
           case 'mysqli':
@@ -424,7 +435,7 @@
             }
 
             if ( !$this->conn ) {
-              $this->logData .= "mysqli_connect() failed<br />";
+              $this->logData .= $this->log_string( "mysqli_connect() failed", "error" );
             }
             break;
           case 'mssql':
@@ -435,7 +446,7 @@
             }
 
             if ( !$this->conn ) {
-              $this->logData .= "mssql_connect() failed<br />";
+              $this->logData .= $this->log_string( "mssql_connect() failed", "error" );
             }
             break;
           case 'postgres':
@@ -446,42 +457,45 @@
             }
 
             if ( ! $this->conn ) {
-              $this->logData .= "pg_connect() failed<br />";
+              $this->logData .= $this->log_string( "pg_connect() failed", "error" );
             }
             break;
         }
 
         if ( ! $this->conn ) {
-          $this->logData .= "Unable to connect to database: " . $this->sql_error() . "<br />";
-          $this->errorMsg[] = "Unable to connect to database: <em>" . $this->sql_error() . "</em><br />";
+          $this->logData .= $this->log_string( "Unable to connect to database: " . $this->sql_error(), "error" );
+          $this->errorMsg[] = "Unable to connect to database: <em>" . $this->sql_error() . "</em>";
           return FALSE;
         }
 
         if ( ! empty( $this->dbName ) ) {
-          return $this->select_db( $this->dbName, $this->conn );
+          $this->logData .= $this->log_string( "Database name not supplied.", "error" );
+          $this->errorMsg[] = "Please provide a database name.";
+          return FALSE;
         }
+
+        $this->select_db( $this->dbName, $this->conn );
 
       } else {
 
         try {
 
           if ( ! $this->remote ) {
-            $this->conn = new PDO( "{$this->dbType}:dbname={$this->dbName};host={$this->dbHost};" . $dbCharset, $this->dbUsername, $this->dbPassword );
+            $this->conn = new PDO( "{$this->dbType}:dbname={$this->dbName};host={$this->dbHost};" . $this->dbCharset, $this->dbUsername, $this->dbPassword );
           } else {
-            $this->conn = new PDO( "{$this->dbType}:dbname={$this->dbName};host={$this->dbHost};port={$this->port};" . $dbCharset, $this->dbUsername, $this->dbPassword );
+            $this->conn = new PDO( "{$this->dbType}:dbname={$this->dbName};host={$this->dbHost};port={$this->port};" . $this->dbCharset, $this->dbUsername, $this->dbPassword );
           }
-
-          // $this->set_charset( $this->conn );
+          $this->conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 
         } catch( PDOExpection $e ) {
-
-          $this->logData .= "PDO() failed<br />";
-          $this->logData .= $e->getMessage(). "<br />";
-          $this->errorMsg[] = "Unable to connect to database: <em>" . $e->getMessage() . "</em><br />";
-
+          $this->logData .= $this->log_string( "PDO() failed", "error" );
+          $this->logData .= $this->log_string( "Unable to connect to database: " . $e->getMessage(), "error" );
+          $this->errorMsg[] = "Unable to connect to database: <em>" . $e->getMessage() . "</em>";
+          return FALSE;
         }
 
       }
+      return TRUE;
 
     }
 
@@ -493,11 +507,11 @@
     * @return bool
     *
     **/
-    public function disconnect() {
-      $this->logData .= "disconnect() called<br />";
+    public function disconnect( $stmt = NULL ) {
+      $this->logData .= $this->log_string( "disconnect() called" );
 
-      if ( !$this->is_db_connected() ) {
-        $this->logData .= "disconnect(): Database connection does not exist<br />";
+      if ( !$this->is_connected() ) {
+        $this->logData .= $this->log_string( "disconnect(): Database connection does not exist", "error" );
         $this->errorMsg[] = "Database connection does not exist";
         return FALSE;
       }
@@ -524,15 +538,17 @@
 
       } else {
 
-        $this->conn->closeCursor();
+        return ( is_null( $stmt ) ) ? $this->conn->closeCursor() : $stmt->closeCursor();
 
       }
 
       $this->conn = NULL;
       $this->query = NULL;
+      $this->stmt = NULL;
       $this->affectedRows = 0;
+      $this->numFields = 0;
       $this->numRows = 0;
-      $this->errorMsg = '';
+      $this->errorMsg = NULL;
       $this->numQueries = 0;
     }
 
@@ -546,7 +562,7 @@
     *
     **/
     private function free_memory( $result = NULL ) {
-      $this->logData .= "free_memory() called<br />";
+      $this->logData .= $this->log_string( "free_memory() called" );
 
       if ( is_null( $result ) ) {
         $result = $this->query;
@@ -576,22 +592,27 @@
     * @return string
     *
     **/
-    private function sql_error() {
+    private function sql_error( $stmt = NULL ) {
       $errormsg = "";
 
-      switch($this->dbType){
-        case "mysql":
-          $errormsg = @mysql_error();
-        break;
-        case "mysqli":
-          $errormsg = @mysqli_error( $this->conn );
-        break;
-        case "mssql":
-          $errormsg = @mssql_get_last_message();
-        break;
-        case "postgres":
-          $errormsg = @pg_last_error( $this->conn );
-        break;
+      if ( ! $this->PDO ) {
+        switch($this->dbType){
+          case "mysql":
+            $errormsg = @mysql_error();
+          break;
+          case "mysqli":
+            $errormsg = @mysqli_error( $this->conn );
+          break;
+          case "mssql":
+            $errormsg = @mssql_get_last_message();
+          break;
+          case "postgres":
+            $errormsg = @pg_last_error( $this->conn );
+          break;
+        }
+      } else {
+        $error = ( is_null( $stmt ) ) ? $this->conn->errorInfo() : $stmt->errorInfo();
+        $errormsg = $error[2];
       }
 
       return $errormsg;
@@ -606,18 +627,22 @@
     * @return integer
     *
     **/
-    private function sql_errno() {
+    private function sql_errno( $stmt = NULL ) {
       $errorno = "";
 
-      switch( $this->dbType ) {
-        case "mysql":
-          $errorno = @mysql_errno( $this->conn ) ;
-        break;
-        case "mysqli":
-          $errorno = @mysqli_errno( $this->conn );
-        break;
-      }
+      if ( ! $this->PDO ) {
+        switch( $this->dbType ) {
+          case "mysql":
+            $errorno = @mysql_errno( $this->conn ) ;
+          break;
+          case "mysqli":
+            $errorno = @mysqli_errno( $this->conn );
+          break;
+        }
 
+      } else {
+        $errorno = ( is_null( $stmt ) ) ? $this->conn->errorCode() : $stmt->errorCode();
+      }
       return $errorno;
     }
 
@@ -632,42 +657,42 @@
     *
     **/
     public function select_db( $db = NULL, $conn = NULL ) {
-      $this->logData .= "select_db() called<br />";
+      $this->logData .= $this->log_string( "select_db() called" );
 
-      if ( is_null( $db ) )
-        $db = $this->dbName;
+      if ( ! is_null( $db ) )
+        $this->dbName = $db;
 
-      if ( is_null( $conn ) )
-        $conn = $this->conn;
+      if ( ! is_null( $conn ) )
+        $this->conn = $conn;
 
       switch( $this->dbType ) {
         case "mysql":
-          if ( !@mysql_select_db( $db, $conn ) ) {
-            $this->logData .= "Could not select database named " . $db . "<br />";
-            $this->logData .= mysql_error() . "<br />";
-            $this->errorMsg[] = "Could not select database: <em>" . $this->dbName . $this->sql_error() . "</em><br />";
+          if ( !@mysql_select_db( $this->dbName, $this->conn ) ) {
+            $this->logData .= $this->log_string( "Could not select database named " . $db, "error" );
+            $this->logData .= $this->log_string( $this->sql_error(), "error" );
+            $this->errorMsg[] = "Could not select database: <em>" . $this->sql_error() . "</em>";
             return FALSE;
           }
         break;
         case "mysqli":
-          if ( !@mysqli_select_db( $conn, $db ) ) {
-            $this->logData .= "Could not select database named " . $db . "<br />";
-            $this->logData .= $this->sql_error() . "<br />";
-            $this->errorMsg[] = "Could not select database: <em>" . $this->sql_error() . "</em><br />";
+          if ( !@mysqli_select_db( $this->conn, $this->dbName ) ) {
+            $this->logData .= $this->log_string( "Could not select database named " . $db, "error" );
+            $this->logData .= $this->log_string( $this->sql_error(), "error" );
+            $this->errorMsg[] = "Could not select database: <em>" . $this->sql_error() . "</em>";
             return FALSE;
           }
         break;
         case "mssql":
-          if ( !@mssql_select_db( $db, $conn ) ) {
-            $this->logData .= "Could not select database named " . $db . "<br />";
-            $this->logData .= $this->sql_error() . "<br />";
-            $this->errorMsg[] = "Could not select database: <em>" . $this->sql_error() . "</em><br />";
+          if ( !@mssql_select_db( $this->dbName, $this->conn ) ) {
+            $this->logData .= $this->log_string( "Could not select database named " . $db, "error" );
+            $this->logData .= $this->log_string( $this->sql_error(), "error" );
+            $this->errorMsg[] = "Could not select database: <em>" . $this->sql_error() . "</em>";
             return FALSE;
           }
         break;
       }
 
-      $this->set_charset( $conn );
+      $this->set_charset( $this->conn );
       return TRUE;
 
     }
@@ -680,7 +705,7 @@
     * @return bool
     *
     **/
-    public function is_db_connected() {
+    public function is_connected() {
       return ( $this->conn ) ? TRUE : FALSE;
     }
 
@@ -694,12 +719,11 @@
     *
     **/
     public function query( $SQL = NULL ) {
-      $this->logData .= "query() called<br />";
-      $this->logData .= "Query: " . $SQL . "<br />";
+      $this->logData .= $this->log_string( "query() called" );
+      $this->logData .= $this->log_string( $SQL, "query" );
 
-      if ( ! $this->is_db_connected() ) {
-
-        $this->logData .= "No database connection made.";
+      if ( ! $this->is_connected() ) {
+        $this->logData .= $this->log_string( "No database connection made.", "error" );
         $this->errorMsg[] = "No database connection made.";
         return FALSE;
 
@@ -724,37 +748,29 @@
           break;
         }
 
-        if ( ! $this->query ) {
-
-          $sqlError = $this->sql_error();
-          $this->logData .= "Query execution failed.<br />";
-          $this->logData .= "Could not run query: " . $sqlError . "<br />";
-          $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em><br />";
-          return FALSE;
-
-        }
-
       } else {
 
-        try {
-
-          $this->query = $this->conn->query( $this->sqlQuery );
-
-        } catch( PDOExpection $e ) {
-
-          $this->logData .= "Query execution failed.<br />";
-          $this->logData .= "Could not run query: ".$e->getMessage(). "<br />";
-          $this->errorMsg[] = "Could not run query: <em>" . $e->getMessage() . "</em><br />";
-          return FALSE;
-
-        }
+        $this->query = $this->conn->query( $this->sqlQuery );
 
       }
 
       $this->numQueries++;
       $this->num_rows();
       unset ( $SQL );
-      return $this->query;
+
+      if ( ! $this->query ) {
+
+        $sqlError = $this->sql_error();
+        $this->logData .= $this->log_string( "Query execution failed.", "error" );
+        $this->logData .= $this->log_string( "Could not run query: " . $sqlError, "error" );
+        $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em>";
+        return FALSE;
+
+      } else {
+
+        return $this->query;
+
+      }
 
     }
 
@@ -770,7 +786,8 @@
     *           array(
     *                 tablename => 'NOT NULL',
     *                 fieldid => 'id',
-    *                 limit => '',
+    *                 fields => '*',
+    *                 limit => '0, 30',
     *                 where => '`name` = 'james' AND `privilege` = 'user'',
     *                 type => '0'
     *           )
@@ -778,12 +795,12 @@
     *
     **/
     public function rand_query( $data ) {
-      $this->logData .= "rand_query() called<br />";
-      $this->logData .= "Query: " . print_r( $data ) . "<br />";
+      $this->logData .= $this->log_string( "rand_query() called" );
+      $this->logData .= $this->log_string( print_r( $data ), "query" );
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
-        $this->logData .= "No database connection made.";
+        $this->logData .= $this->log_string( "No database connection made.", "error" );
         $this->errorMsg[] = "No database connection made.";
         return FALSE;
 
@@ -861,14 +878,13 @@
     *
     * Fetch options
     *
-    * @access public
+    * @access private
     * @return mixed
-    * @param string $type -> Fetch type ie: array
+    * @param string $type -> Fetch type ie: array|object|row|assoc
     *
     **/
-    public function fetch_option( $type = 'object' ) {
-      if ( ! $this->query() )
-        return FALSE;
+    private function fetch_option( $type = 'object' ) {
+      $this->logData .= $this->log_string( "fetch_option() called" );
 
       switch( $type ) {
         case "object":
@@ -894,14 +910,14 @@
     *
     * @access public
     * @return mixed
-    * @param string $SQL -> Database query
+    * @param string $SQL -> Database SQL query
     *
     **/
-    public function fetch( $type = 'object', $query = NULL ) {
-      $this->logData .= "fetch() called<br />";
+    public function fetch( $SQL = NULL, $type = 'object' ) {
+      $this->logData .= $this->log_string( "fetch() called" );
 
-      if ( ! is_null ( $query ) )
-        $this->query = $query;
+      if ( ! is_null ( $SQL ) )
+        $this->sqlQuery = $SQL;
 
       if ( $this->cache == TRUE && $this->verify_cache() ) {
         return $this->get_cache();
@@ -917,18 +933,18 @@
     *
     * @access public
     * @return mixed
-    * @param string $SQL -> Database query
+    * @param string $SQL -> Database SQL query
     *
     **/
-    public function fetch_all( $query = NULL ) {
-      $this->logData .= "fetch_all() called<br />";
+    public function fetch_all( $SQL = NULL ) {
+      $this->logData .= $this->log_string( "fetch_all() called" );
 
-      if ( ! is_null( $query ) )
-        $this->query = $query;
+      if ( ! is_null( $SQL ) )
+        $this->sqlQuery = $SQL;
 
-      $this->logData .= "Query: " . $this->sqlQuery . "<br />";
+      $this->logData .= $this->log_string( $this->sqlQuery, "query" );
 
-      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->sqlQuery );
+      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
       $data = array();
@@ -946,32 +962,41 @@
           while ( $obj = $this->fetch_object() ) {
             $data[] = $obj;
           }
+          $this->disconnect();
 
         } else {
 
-          while ( $obj = $this->conn->fetch( PDO::FETCH_OBJ ) ) {
-            $data[] = $obj;
+          $this->query = $this->conn->query( $this->sqlQuery );
+
+          if ( ! $this->query ) {
+            $sqlError = $this->sql_error();
+            $this->logData .= $this->log_string( "Query execution failed.", "error" );
+            $this->logData .= $this->log_string( "Could not run query: " . $sqlError, "error" );
+            $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em>";
+            return FALSE;
           }
 
+          $data = $this->query->fetchAll( PDO::FETCH_OBJ );
+          $this->disconnect( $this->query );
+        }
+
+        $this->queryResult = $data;
+        $this->num_rows();
+        $timeTaken = $this->stop_timer();
+
+        // Cache
+        if ( $this->cache ) {
+          $this->set_cache();
+        }
+
+        // debug
+        if ( $this->debug ) {
+          $this->debug_data( $timeTaken, $this->sqlQuery );
         }
 
       }
 
-      $timeTaken = $this->stop_timer();
-      $this->disconnect();
-
-      // Cache
-      if ( $this->cache ) {
-        $this->queryResult = $data;
-        $this->set_cache();
-      }
-
-      // Debug
-      if ( $this->Debug ) {
-        $this->debug_data( $timeTaken, $this->sqlQuery );
-      }
-
-      unset( $query );
+      unset( $SQL );
       return $this->queryResult;
 
     }
@@ -982,57 +1007,55 @@
     *
     * @access public
     * @return mixed
-    * @param string $SQL -> Database query
+    * @param string $SQL -> Database SQL query
+    * @param integer $colNumber -> Column Number
     *
     **/
-    public function fetch_field( $query = NULL ) {
-      $this->logData .= "fetch_field() called<br />";
+    public function fetch_field( $SQL = NULL, $colNumber = 0 ) {
+      $this->logData .= $this->log_string( "fetch_field() called" );
 
-      if ( ! is_null( $query ) )
-        $this->query = $query;
+      if ( ! is_null( $SQL ) )
+        $this->sqlQuery = $SQL;
 
-      $this->logData .= "Query: " . $this->sqlQuery . "<br />";
+      if ( ! ctype_digit( strval( $colNumber ) ) ) {
+        $this->logData .= $this->log_string( "Invalid column number.", "error" );
+        $this->errorMsg[] = "Invalid column number";
+        return FALSE;
+      }
 
-      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->sqlQuery );
+      $this->logData .= $this->log_string( $this->sqlQuery, "query" );
+
+      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
       if ( $this->cache == TRUE && $this->verify_cache() ) {
+
         return $this->get_cache();
+
       } else {
 
         $this->start_timer();
 
-        if ( ! $this->PDO ) {
-
-          if ( $row = $this->fetch_row() ) {
-            $data = $row[0];
-          }
-
-        } else {
-
-          if ( $row = $this->conn->fetchColumn() ) {
-            $data = $row[0]; // check
-          }
-
+        if ( $row = $this->fetch_row() ) {
+          $data = $row[$colNumber];
         }
 
+        $this->queryResult = $data;
         $timeTaken = $this->stop_timer();
-        $this->disconnect();
 
         // Cache
         if ( $this->cache ) {
-          $this->queryResult = $data;
           $this->set_cache();
         }
 
-        // Debug
-        if ( $this->Debug ) {
+        // debug
+        if ( $this->debug ) {
           $this->debug_data( $timeTaken, $this->sqlQuery );
         }
 
       }
 
-      unset( $query );
+      unset( $SQL, $colNumber );
       return $this->queryResult;
     }
 
@@ -1042,56 +1065,80 @@
     *
     * @access public
     * @return bool|array
-    * @param string $SQL -> Database query
+    * @param string $SQL -> Database SQL query
     *
     **/
-    public function fetch_assoc() {
-      $this->logData .= "fetch_assoc() called<br />";
-      $this->logData .= "Query: " . $this->sqlQuery . "<br />";
+    public function fetch_assoc( $SQL = NULL ) {
+      $this->logData .= $this->log_string( "fetch_assoc() called" );
+
+      if ( ! is_null( $SQL ) )
+        $this->sqlQuery = $SQL;
+
+      $this->logData .= $this->log_string( $this->sqlQuery, "error" );
       $this->queryResult = NULL;
 
-      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->sqlQuery );
+      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
-      $this->start_timer();
+      if ( $this->cache == TRUE && $this->verify_cache() ) {
 
-      if ( ! $this->PDO ) {
-
-        switch( $this->dbType ) {
-          case "mysql":
-            $this->queryResult = @mysql_fetch_assoc( $this->query );
-          break;
-          case "mysqli":
-            $this->queryResult = @mysqli_fetch_assoc( $this->query );
-          break;
-          case "mssql":
-            $this->queryResult = @mssql_fetch_assoc( $this->query );
-          break;
-          case "postgres":
-            $this->queryResult = @pg_fetch_assoc( $this->query );
-          break;
-        }
+        return $this->get_cache();
 
       } else {
 
-        $this->queryResult = $this->conn->fetch( PDO::FETCH_ASSOC );
+        $this->start_timer();
+
+        if ( ! $this->PDO ) {
+
+          switch( $this->dbType ) {
+            case "mysql":
+              $this->queryResult = @mysql_fetch_assoc( $this->query );
+            break;
+            case "mysqli":
+              $this->queryResult = @mysqli_fetch_assoc( $this->query );
+            break;
+            case "mssql":
+              $this->queryResult = @mssql_fetch_assoc( $this->query );
+            break;
+            case "postgres":
+              $this->queryResult = @pg_fetch_assoc( $this->query );
+            break;
+          }
+          $this->disconnect();
+
+        } else {
+
+          $this->query = $this->conn->query( $this->sqlQuery );
+
+          if ( ! $this->query ) {
+            $sqlError = $this->sql_error();
+            $this->logData .= $this->log_string( "Query execution failed.", "error" );
+            $this->logData .= $this->log_string( "Could not run query: " . $sqlError, "error" );
+            $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em>";
+            return FALSE;
+          }
+
+          $this->queryResult = $this->query->fetch( PDO::FETCH_ASSOC );
+          $this->disconnect( $this->query );
+
+        }
+
+        $this->num_fields();
+        $timeTaken = $this->stop_timer();
+
+        // Cache
+        if ( $this->cache ) {
+          $this->set_cache();
+        }
+
+        // debug
+        if ( $this->debug ) {
+          $this->debug_data( $timeTaken, $this->sqlQuery );
+        }
+
+        return $this->queryResult;
 
       }
-
-      $timeTaken = $this->stop_timer();
-      $this->disconnect();
-
-      // Cache
-      if ( $this->cache ) {
-        $this->set_cache();
-      }
-
-      // Debug
-      if ( $this->Debug ) {
-        $this->debug_data( $timeTaken, $this->sqlQuery );
-      }
-
-      return $this->queryResult;
 
     }
 
@@ -1101,56 +1148,80 @@
     *
     * @access public
     * @return bool|object
-    * @param string $SQL -> Database query
+    * @param string $SQL -> Database SQL query
     *
     **/
-    public function fetch_object() {
-      $this->logData .= "fetch_object() called<br />";
-      $this->logData .= "Query: " . $this->sqlQuery . "<br />";
+    public function fetch_object( $SQL = NULL ) {
+      $this->logData .= $this->log_string( "fetch_object() called" );
+
+      if ( ! is_null( $SQL ) )
+        $this->sqlQuery = $SQL;
+
+      $this->logData .= $this->log_string( $this->sqlQuery, "query" );
       $this->queryResult = NULL;
 
-      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->sqlQuery );
+      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
-      $this->start_timer();
+      if ( $this->cache == TRUE && $this->verify_cache() ) {
 
-      if ( ! $this->PDO ) {
-
-        switch( $this->dbType ) {
-          case "mysql":
-            $this->queryResult = @mysql_fetch_object( $this->query );
-          break;
-          case "mysqli":
-            $this->queryResult = @mysqli_fetch_object( $this->query );
-          break;
-          case "mssql":
-            $this->queryResult = @mssql_fetch_object( $this->query );
-          break;
-          case "postgres":
-            $this->queryResult = @pg_fetch_object( $this->query );
-          break;
-        }
+        return $this->get_cache();
 
       } else {
 
-        $this->queryResult = $this->conn->fetch( PDO::FETCH_OBJ );
+        $this->start_timer();
+
+        if ( ! $this->PDO ) {
+
+          switch( $this->dbType ) {
+            case "mysql":
+              $this->queryResult = @mysql_fetch_object( $this->query );
+            break;
+            case "mysqli":
+              $this->queryResult = @mysqli_fetch_object( $this->query );
+            break;
+            case "mssql":
+              $this->queryResult = @mssql_fetch_object( $this->query );
+            break;
+            case "postgres":
+              $this->queryResult = @pg_fetch_object( $this->query );
+            break;
+          }
+          $this->disconnect();
+
+        } else {
+
+          $this->query = $this->conn->query( $this->sqlQuery );
+
+          if ( ! $this->query ) {
+            $sqlError = $this->sql_error();
+            $this->logData .= $this->log_string( "Query execution failed.", "error" );
+            $this->logData .= $this->log_string( "Could not run query: " . $sqlError, "error" );
+            $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em>";
+            return FALSE;
+          }
+
+          $this->queryResult = $this->query->fetch( PDO::FETCH_OBJ );
+          $this->disconnect( $this->query );
+
+        }
+
+        $this->num_fields();
+        $timeTaken = $this->stop_timer();
+
+        // Cache
+        if ( $this->cache ) {
+          $this->set_cache();
+        }
+
+        // debug
+        if ( $this->debug ) {
+          $this->debug_data( $timeTaken, $this->sqlQuery );
+        }
+
+        return $this->queryResult;
 
       }
-
-      $timeTaken = $this->stop_timer();
-      $this->disconnect();
-
-      // Cache
-      if ( $this->cache ) {
-        $this->set_cache();
-      }
-
-      // Debug
-      if ( $this->Debug ) {
-        $this->debug_data( $timeTaken, $this->sqlQuery );
-      }
-
-      return $this->queryResult;
 
     }
 
@@ -1160,56 +1231,81 @@
     *
     * @access public
     * @return bool|array
-    * @param string $SQL -> Database query
+    * @param string $SQL -> Database SQL query
     *
     **/
-    public function fetch_array() {
-      $this->logData .= "fetch_array() called<br />";
-      $this->logData .= "Query: " . $this->sqlQuery . "<br />";
+    public function fetch_array( $SQL = NULL ) {
+      $this->logData .= $this->log_string( "fetch_array() called" );
+
+      if ( ! is_null( $SQL ) )
+        $this->sqlQuery = $SQL;
+
+      $this->logData .= $this->log_string( $this->sqlQuery, "query" );
       $this->queryResult = NULL;
 
-      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->sqlQuery );
+      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
-      $this->start_timer();
+      if ( $this->cache == TRUE && $this->verify_cache() ) {
 
-      if ( ! $this->PDO ) {
-
-        switch( $this->dbType ) {
-          case "mysql":
-            $this->queryResult = @mysql_fetch_array( $this->query );
-          break;
-          case "mysqli":
-            $this->queryResult = @mysqli_fetch_array( $this->query );
-          break;
-          case "mssql":
-            $this->queryResult = @mssql_fetch_array( $this->query );
-          break;
-          case "postgres":
-            $this->queryResult = @pg_fetch_array( $this->query );
-          break;
-        }
+        return $this->get_cache();
 
       } else {
 
-        $this->queryResult = $this->conn->fetch( PDO::FETCH_BOTH );
+        $this->start_timer();
+
+        if ( ! $this->PDO ) {
+
+          switch( $this->dbType ) {
+            case "mysql":
+              $this->queryResult = @mysql_fetch_array( $this->query );
+            break;
+            case "mysqli":
+              $this->queryResult = @mysqli_fetch_array( $this->query );
+            break;
+            case "mssql":
+              $this->queryResult = @mssql_fetch_array( $this->query );
+            break;
+            case "postgres":
+              $this->queryResult = @pg_fetch_array( $this->query );
+            break;
+          }
+          $this->disconnect();
+
+        } else {
+
+          $this->query = $this->conn->query( $this->sqlQuery );
+
+          if ( ! $this->query ) {
+            $sqlError = $this->sql_error();
+            $this->logData .= $this->log_string( "Query execution failed.", "error" );
+            $this->logData .= $this->log_string( "Could not run query: " . $sqlError, "error" );
+            $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em>";
+            return FALSE;
+          }
+
+          $this->queryResult = $this->query->fetch( PDO::FETCH_BOTH );
+          $this->disconnect( $this->query );
+
+        }
+
+        $this->num_fields();
+        $timeTaken = $this->stop_timer();
+
+        // Cache
+        if ( $this->cache ) {
+          $this->set_cache();
+        }
+
+        // debug
+        if ( $this->debug ) {
+          $this->debug_data( $timeTaken, $this->sqlQuery );
+        }
+
+        return $this->queryResult;
 
       }
 
-      $timeTaken = $this->stop_timer();
-      $this->disconnect();
-
-      // Cache
-      if ( $this->cache ) {
-        $this->set_cache();
-      }
-
-      // Debug
-      if ( $this->Debug ) {
-        $this->debug_data( $timeTaken, $this->sqlQuery );
-      }
-
-      return $this->queryResult;
     }
 
     /**
@@ -1217,56 +1313,81 @@
     * Get number of rows in result
     *
     * @access public
-    * @return bool|integer
+    * @return bool|array
+    * @param string $SQL -> Database SQL query
     *
     **/
-    public function fetch_row() {
-      $this->logData .= "fetch_row() called<br />";
-      $this->logData .= "Query: " . $this->sqlQuery . "<br />";
-      $this->queryResult = NULL;
+    public function fetch_row( $SQL = NULL ) {
+      $this->logData .= $this->log_string( "fetch_row() called" );
 
-      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->sqlQuery );
+      $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
-      $this->start_timer();
+      if ( ! is_null( $SQL ) )
+        $this->sqlQuery = $SQL;
 
-      if ( ! $this->PDO ) {
+      $this->logData .= $this->log_string( $this->sqlQuery, "query" );
+      $this->queryResult = NULL;
 
-        switch( $this->dbType ) {
-          case "mysql":
-            $this->queryResult = @mysql_fetch_row( $this->query );
-          break;
-          case "mysqli":
-            $this->queryResult = @mysqli_fetch_row( $this->query );
-          break;
-          case "mssql":
-            $this->queryResult = @mssql_fetch_row( $this->query );
-          break;
-          case "postgres":
-            $this->queryResult = @pg_fetch_row( $this->query );
-          break;
-        }
+      if ( $this->cache == TRUE && $this->verify_cache() ) {
+
+        return $this->get_cache();
 
       } else {
 
-        $this->queryResult = $this->conn->fetch( PDO::FETCH_NUM );
+        $this->start_timer();
+
+        if ( ! $this->PDO ) {
+
+          switch( $this->dbType ) {
+            case "mysql":
+              $this->queryResult = @mysql_fetch_row( $this->query );
+            break;
+            case "mysqli":
+              $this->queryResult = @mysqli_fetch_row( $this->query );
+            break;
+            case "mssql":
+              $this->queryResult = @mssql_fetch_row( $this->query );
+            break;
+            case "postgres":
+              $this->queryResult = @pg_fetch_row( $this->query );
+            break;
+          }
+          $this->disconnect();
+
+        } else {
+
+          $this->query = $this->conn->query( $this->sqlQuery );
+
+          if ( ! $this->query ) {
+            $sqlError = $this->sql_error();
+            $this->logData .= $this->log_string( "Query execution failed.", "error" );
+            $this->logData .= $this->log_string( "Could not run query: " . $sqlError, "error" );
+            $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em>";
+            return FALSE;
+          }
+
+          $this->queryResult = $this->query->fetch( PDO::FETCH_NUM );
+          $this->disconnect( $this->query );
+        }
+
+        $this->num_fields();
+        $timeTaken = $this->stop_timer();
+
+        // Cache
+        if ( $this->cache ) {
+          $this->set_cache();
+        }
+
+        // debug
+        if ( $this->debug ) {
+          $this->debug_data( $timeTaken, $this->sqlQuery );
+        }
+
+        return $this->queryResult;
 
       }
 
-      $timeTaken = $this->stop_timer();
-      $this->disconnect();
-
-      // Cache
-      if ( $this->cache ) {
-        $this->set_cache();
-      }
-
-      // Debug
-      if ( $this->Debug ) {
-        $this->debug_data( $timeTaken, $this->sqlQuery );
-      }
-
-      return $this->queryResult;
     }
 
     /**
@@ -1278,15 +1399,15 @@
     * @param resource $query -> Query result
     *
     **/
-    public function num_rows( $query = NULL ) {
-      $this->logData .= "num_rows() called<br />";
+    public function num_rows( $queryResult = NULL ) {
+      $this->logData .= $this->log_string( "num_rows() called" );
 
-      if ( ! is_null( $query ) )
-        $this->query = $query;
+      if ( ! is_null( $queryResult ) )
+        $this->query = $queryResult;
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
-        $this->logData .= "No database connection made.";
+        $this->logData .= $this->log_string( "No database connection made.", "error" );
         $this->errorMsg[] = "No database connection made.";
         return FALSE;
 
@@ -1311,15 +1432,18 @@
 
       } else {
 
-        $this->numRows = $this->queryResult->rowCount();
+        if ( ! is_null( $queryResult ) ) {
+          $this->queryResult = $this->query->fetchAll( PDO::FETCH_OBJ );
+        }
+        $this->numRows = count( $this->queryResult );
 
       }
 
       if ( ! $this->numRows ) {
         $sqlError = $this->sql_error();
-        $this->logData .= "Query execution failed.<br />";
-        $this->logData .= "Could not run query: " . $sqlError . "<br />";
-        $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em><br />";
+        $this->logData .= $this->log_string( "Query execution failed.", "error" );
+        $this->logData .= $this->log_string( "Could not run query: " . $sqlError, "error" );
+        $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em>";
         return FALSE;
       }
 
@@ -1332,14 +1456,15 @@
     *
     * @access public
     * @return bool|Integer
+    * @param object $stmt -> PDO statement object
     *
     **/
-    public function num_fields() {
-      $this->logData .= "num_fields() called<br />";
+    public function num_fields( $stmt = NULL ) {
+      $this->logData .= $this->log_string( "num_fields() called" );
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
-        $this->logData .= "No database connection made.";
+        $this->logData .= $this->log_string( "No database connection made.", "error" );
         $this->errorMsg[] = "No database connection made.";
         return FALSE;
 
@@ -1364,15 +1489,15 @@
 
       } else {
 
-        $this->numFields = $this->queryResult->columnCount();
+        $this->numFields = ( is_null( $stmt ) ) ? $this->query->columnCount() : $stmt->columnCount();
 
       }
 
       if ( ! $this->numFields ) {
         $sqlError = $this->sql_error();
-        $this->logData .= "Query execution failed.<br />";
-        $this->logData .= "Could not run query: " . $sqlError . "<br />";
-        $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em><br />";
+        $this->logData .= $this->log_string( "Query execution failed.", "error" );
+        $this->logData .= $this->log_string( "Could not run query: " . $sqlError, "error" );
+        $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em>";
         return FALSE;
       }
 
@@ -1388,11 +1513,11 @@
     *
     **/
     public function insert_id() {
-      $this->logData .= "insert_id() called<br />";
+      $this->logData .= $this->log_string( "insert_id() called." );
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
-        $this->logData .= "No database connection made.";
+        $this->logData .= $this->log_string( "No database connection made.", "error" );
         $this->errorMsg[] = "No database connection made.";
         return FALSE;
 
@@ -1417,15 +1542,15 @@
 
       } else {
 
-        $this->insertID = $this->query->lastInsertId();
+        $this->insertID = $this->conn->lastInsertId();
 
       }
 
       if ( ! $this->insertID ) {
         $sqlError = $this->sql_error();
-        $this->logData .= "Query execution failed.<br />";
-        $this->logData .= "Failed to retrieve identity value: " . $sqlError . "<br />";
-        $this->errorMsg[] = "Failed to retrieve identity value: <em>" . $sqlError . "</em><br />";
+        $this->logData .= $this->log_string( "Query execution failed.", "error" );
+        $this->logData .= $this->log_string( "Failed to retrieve identity value: " . $sqlError, "error" );
+        $this->errorMsg[] = "Failed to retrieve identity value: <em>" . $sqlError . "</em>";
         return FALSE;
       }
 
@@ -1438,14 +1563,15 @@
     *
     * @access public
     * @return bool|Integer
+    * @param object $stmt -> PDO statement object
     *
     **/
-    public function affected_rows() {
-      $this->logData .= "affected_row() called<br />";
+    public function affected_rows( $stmt = NULL ) {
+      $this->logData .= $this->log_string( "affected_row() called." );
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
-        $this->logData .= "No database connection made.";
+        $this->logData .= $this->log_string( "No database connection made.", "error" );
         $this->errorMsg[] = "No database connection made.";
         return FALSE;
 
@@ -1470,16 +1596,8 @@
 
       } else {
 
-        $this->affectedRows = $this->query;
+        $this->affectedRows = ( is_null( $stmt ) ) ? $this->query->rowCount() : $stmt->rowCount();
 
-      }
-
-      if ( ! $this->affectedRows ) {
-        $sqlError = $this->sql_error();
-        $this->logData .= "Query execution failed.<br />";
-        $this->logData .= "Could not run query: " . $sqlError . "<br />";
-        $this->errorMsg[] = "Could not run query: <em>" . $sqlError . "</em><br />";
-        return FALSE;
       }
 
       return $this->affectedRows;
@@ -1494,11 +1612,11 @@
     *
     **/
     public function insert( $tableName, $insertData, $group = TRUE ) {
-      $this->logData .= "insert() called<br />";
+      $this->logData .= $this->log_string( "insert() called" );
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
-        $this->logData .= "No database connection made.";
+        $this->logData .= $this->log_string( "No database connection made.", "error" );
         $this->errorMsg[] = "No database connection made.";
         return FALSE;
 
@@ -1513,14 +1631,9 @@
         if ( !$group ) {
           $tableField = '';
           $fieldValue = array();
-          // foreach ( $updateData as $field => $value ) {
-          //   $tableField .= ', `' . $this->escape( $this->cleanInput( $field ) ) . '`';
-          //   $fieldValue .= ', ' . $this->escape( $this->cleanInput( $value ) );
-          // }
-
           foreach ( $insertData as $field => $value ) {
-            $tableField .= ', `' . $this->escape( $this->cleanInput( $field ) ) . '`';
-            $fieldValue[] = ', `' . $this->escape( $this->cleanInput( $value ) ) . '`';
+            $tableField .= ', `' . $this->escape( $field ) . '`';
+            $fieldValue[] = ', `' . $this->escape( $value ) . '`';
           }
 
           $this->sqlQuery .= '( ' . trim( substr( $tableField, 2 ) ) . ' ) ';
@@ -1528,21 +1641,22 @@
         } else {
           $data = array();
           foreach ( $updateData as $column => $value ) {
-            $data[] = "`" . $this->escape( $this->cleanInput( $column ) ) . "` = '" . $this->escape( $this->cleanInput( $value ) ) . "'";
+            $data[] = "`" . $this->escape( $this->clean_input( $column ) ) . "` = '" . $this->escape( $this->clean_input( $value ) ) . "'";
           }
           $this->sqlQuery .= implode( ', ', $data );
         }
 
-        $this->logData .= "Query: " . $this->sqlQuery . "<br />";
-        if ( $this->query( $this->sqlQuery ) ) {
-          return TRUE;
+        $this->logData .= $this->log_string( $this->sqlQuery, "query" );
+        if ( ! $this->query( $this->sqlQuery ) ) {
+          return FALSE;
         }
+        $this->affected_rows();
 
       } else {
 
         if ( !is_array( $insertData ) && !is_null( $insertData ) ) {
-          $this->logData .= "PDO Identifier must be an array.";
-          $this->errorMsg[] = "PDO Identifier must be an array.";
+          $this->logData .= $this->log_string( "PDO identifier must be an array.", "error" );
+          $this->errorMsg[] = "PDO identifier must be an array.";
           return FALSE;
         }
 
@@ -1550,15 +1664,27 @@
         $this->sqlQuery .= ' ( ' . implode( ', ', array_keys( $insertData ) ) . ' )';
         $this->sqlQuery .= ' VALUES ( :' . implode( ', :', array_keys( $insertData ) ) . ' )';
 
-        $this->logData .= "Query: " . $this->sqlQuery . "<br />";
+        $this->logData .= $this->log_string( $this->sqlQuery, "query" );
 
         $stmt = $this->conn->prepare( $this->sqlQuery );
+
         foreach ( $insertData as $field => $value ) {
-          $stmt->bindParam( ':{$field}', $value );
+          $bindField = ':' . $field;
+          $stmt->bindParam( $bindField, $insertData[$field] );
         }
-        $stmt->execute();
+
+        if ( ! $stmt->execute() ) {
+          $error = $this->sql_error( $stmt );
+          $this->errorMsg[] = $error;
+          $this->logData .= $this->log_string( $error, "error" );
+          return FALSE;
+        }
+        $this->affected_rows( $stmt );
+        // $this->conn->lastInsertId( 'student_id');
 
       }
+      unset( $tableName, $insertData );
+      return TRUE;
 
     }
 
@@ -1574,24 +1700,24 @@
     *
     **/
     public function update( $tableName, $updateData, $identifier = NULL ) {
-      $this->logData .= "update() called<br />";
+      $this->logData .= $this->log_string( 'update() called.' );
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
-        $this->logData .= "No database connection made.";
+        $this->logData .= $this->log_string( 'No database connection made.', 'error' );
         $this->errorMsg[] = "No database connection made.";
         return FALSE;
 
       }
 
       if ( ! is_array( $updateData ) && ! is_null( $updateData ) ) {
-        $this->logData .= "Update data must be an array";
+        $this->logData .= $this->log_string( 'Update data must be an array.', 'error' );
         $this->errorMsg[] = "Update data must be an array.";
         return FALSE;
       }
 
       if ( is_null( $identifier ) ) {
-        $this->logData .= "Specify an identifier.";
+        $this->logData .= $this->log_string( 'Specify an identifier.', 'error' );
         $this->errorMsg[] = "Specify an identifier.";
         return FALSE;
       }
@@ -1603,7 +1729,7 @@
         if ( is_array( $identifier ) ) {
           $identifiers = array();
           foreach ( $identifier as $field => $value ) {
-            $identifiers[] = " AND `" . $this->escape( $this->cleanInput( $field ) ) . "` = '" . $this->escape( $this->cleanInput( $value ) ) . "'";
+            $identifiers[] = " AND `" . $this->escape( $this->clean_input( $field ) ) . "` = '" . $this->escape( $this->clean_input( $value ) ) . "'";
           }
 
           $where = "WHERE " . substr( $identifiers, 4 );
@@ -1620,21 +1746,22 @@
 
         $data = array();
         foreach ( $updateData as $column => $value ) {
-          $data[] = "`" . $this->escape( $this->cleanInput( $column ) ) . "` = '" . $this->escape( $this->cleanInput( $value ) ) . "'";
+          $data[] = "`" . $this->escape( $this->clean_input( $column ) ) . "` = '" . $this->escape( $this->clean_input( $value ) ) . "'";
         }
         $this->sqlQuery .= implode( ',', $data );
 
         $this->sqlQuery .= $where;
 
-        $this->logData .= "Query: " . $this->sqlQuery . "<br />";
+        $this->logData .= $this->log_string( $this->sqlQuery, 'query' );
         if ( $this->query( $this->sqlQuery ) ) {
           return TRUE;
         }
+        $this->affected_rows();
 
       } else {
 
         if ( !is_array( $identifier ) && !is_null( $identifier ) ) {
-          $this->logData .= "PDO identifier must be an array.";
+          $this->logData .= $this->log_string( 'PDO identifier must be an array.', 'error' );
           $this->errorMsg[] = "PDO identifier must be an array.";
           return FALSE;
         }
@@ -1642,24 +1769,37 @@
         $this->sqlQuery = "UPDATE " . $tableName . " SET ";
 
         $updateFields = array();
+        $variable = array();
         foreach ( $updateData as $field => $value ) {
-          $updateFields[] = "`" . $this->escape( $this->cleanInput( $field ) ) . "` = ':" . $this->escape( $this->cleanInput( $field ) ) . "'";
+          $fieldVar = ':' . $field;
+          $updateFields[] = $field . " = " . $fieldVar;
         }
         $this->sqlQuery .= implode( ', ', $updateFields );
 
         foreach ( $identifier as $key => $value) {
           $where .= " AND {$key} = :{$key}";
+          $variable[$key] = $this->escape( $value, FALSE );
         }
         $this->sqlQuery .= ' WHERE ' . substr( $where, 4 );
 
-        $this->logData .= "Query: " . $this->sqlQuery . "<br />";
+        $this->logData .= $this->log_string( $this->sqlQuery, 'query' );
 
         $stmt = $this->conn->prepare( $this->sqlQuery );
         foreach ( $updateData as $field => $value ) {
-          $stmt->bindParam( ':{$field}', $value );
+          $variable[$field] = $this->escape( $value, FALSE );
         }
-        $stmt->execute();
+
+        if ( ! $stmt->execute( $variable ) ) {
+          $error = $this->sql_error( $stmt );
+          $this->errorMsg[] = $error;
+          $this->logData .= $this->log_string( $error, 'error' );
+          return FALSE;
+        }
+        $this->affected_rows( $stmt );
+
       }
+      unset( $tableName, $updateData, $identifier );
+      return TRUE;
     }
 
     /**
@@ -1673,11 +1813,11 @@
     *
     **/
     public function delete( $tableName, $identifier = NULL ) {
-      $this->logData .= "delete() called<br />";
+      $this->logData .= $this->log_string( "delete() called." );
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
-        $this->logData .= "No database connection made.";
+        $this->logData .= $this->log_string( "No database connection made.", "error" );
         $this->errorMsg[] = "No database connection made.";
         return FALSE;
 
@@ -1686,6 +1826,7 @@
       $where = '';
 
       if ( ! $this->PDO ) {
+
         if ( !empty( $identifier ) ) {
           if ( substr( strtoupper( trim( $identifier ) ), 0, 5 ) != 'WHERE' ) {
             $where = " WHERE ". $identifier;
@@ -1694,34 +1835,52 @@
           }
         }
         $this->sqlQuery = "DELETE FROM " . $tableName . $where;
-        $this->logData .= "Query: " . $this->sqlQuery . "<br />";
-        if ( $this->query( $this->sqlQuery ) ) {
-          return TRUE;
-        }
-
-      } else {
-        if ( !is_array( $identifier ) && !is_null( $identifier ) ) {
-          $this->logData .= "PDO Identifier must be an array.";
-          $this->errorMsg[] = "PDO Identifier must be an array.";
+        $this->logData .= $this->log_string( $this->sqlQuery, "query" );
+        if ( ! $this->query( $this->sqlQuery ) ) {
           return FALSE;
         }
+        $this->affected_rows();
+        return TRUE;
+
+      } else {
+
+        $this->sqlQuery = "DELETE FROM " . $tableName;
+
+        if ( ! is_null( $identifier ) && ! is_array( $identifier ) ) {
+          if ( substr( strtoupper( trim( $identifier ) ), 0, 5 ) != 'WHERE' ) {
+            $where = " WHERE ". $identifier;
+          } else {
+            $where = " " . trim( $identifier );
+          }
+         $this->sqlQuery .= $where;
+         $stmt = $this->conn->prepare( $this->sqlQuery );
+       }
 
         if ( is_null( $identifier ) ) {
-          $this->sqlQuery = "DELETE FROM " . $tableName;
+          $stmt = $this->conn->prepare( $this->sqlQuery );
         }
 
-        if ( is_array( $identifier ) ) {
-          $this->sqlQuery = "DELETE FROM " . $tableName . " WHERE ";
-          foreach ( $identifier as $key => $value) {
-            $this->sqlQuery .= " AND {$key} = :{$key}";
+        if ( !is_null( $identifier ) && is_array( $identifier ) ) {
+           foreach ( $identifier as $key => $value) {
+            $where .= " AND {$key} = :{$key}";
+            $variable[$key] = $this->escape( $value, FALSE );
           }
-          $this->sqlQuery = substr( $this->sqlQuery, 4 );
+          $this->sqlQuery .= " WHERE " . substr( $where, 4 );
           $stmt = $this->conn->prepare( $this->sqlQuery );
-          foreach ( $identifier as $key => $value ) {
-            $stmt->bindParam( ':{$key}', $value, PDO::PARAM_INT );
+          foreach ( $identifier as $field => $value ) {
+            $bindField = ':' . $field;
+            $stmt->bindParam( $bindField, $identifier[$field], PDO::PARAM_INT );
           }
         }
-        $stmt->execute();
+        $this->logData .= $this->log_string( $this->sqlQuery, 'query' );
+        if ( ! $stmt->execute( $variable ) ) {
+          $error = $this->sql_error( $stmt );
+          $this->errorMsg[] = $error;
+          $this->logData .= $this->log_string( $error, 'error' );
+          return FALSE;
+        }
+        $this->affected_rows( $stmt );
+        return TRUE;
 
       }
 
@@ -1741,7 +1900,7 @@
     public function set_charset( $conn = NULL, $charset = NULL, $collate = NULL ) {
       $this->logData .= "set_charset() called<br />";
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
         $this->logData .= "No database connection made.";
         $this->errorMsg[] = "No database connection made.";
@@ -1796,6 +1955,38 @@
       }
 
       return TRUE;
+    }
+
+    /**
+    *
+    * Delete record from database table
+    *
+    * @access public
+    * @return bool|Integer
+    * @param string $tableName -> Name of database table
+    * @param array|string $identifier -> Query identifier
+    *
+    **/
+    private function log_string( $string, $type = 'log' ) {
+      if ( is_null( $type) )
+        $type = 'error';
+
+      $dateTime = date( 'd/m/y h:i:s' );
+      $logString = '';
+      switch ( strtolower( $type ) ) {
+        case 'error':
+        case 'query':
+          $logString = ucwords( $type) . ': <em>' . $string . '</em>';
+          break;
+        case 'log':
+          $logString = $string;
+          break;
+        default:
+          $logString = $string;
+          break;
+      }
+      return $dateTime . ' ' .$logString . '<br />';
+
     }
 
     /**
@@ -1963,7 +2154,7 @@
     public function import_sql( $file ) {
       $this->logData .= "import_sql() called.<br />";
 
-      if ( ! $this->is_db_connected() ) {
+      if ( ! $this->is_connected() ) {
 
         $this->logData .= "No database connection made.";
         $this->errorMsg[] = "No database connection made.";
@@ -2157,11 +2348,138 @@
 
     }
 
-    public function output( $value, $type = 'jsone' ) {
+    /**
+    *
+    * Convert array|object to xml
+    *
+    * @access public
+    * @return string
+    * @param array|object $array -> Array/object of data to convert
+    * @param array|string $xml -> Check if the XML Object exists
+    *
+    **/
+    public function convert_to_xml( $array, $xml = FALSE ) {
+      if ( ! ( is_array( $array ) || is_object( $array ) ) ) {
+        return FALSE;
+      }
+
+      if ( $xml === FALSE ) {
+        $xml = new SimpleXMLElement('<root/>');
+        $this->logData .= $this->log_string( "convert_to_xml() called" );
+      }
+
+      foreach ( $array as $key => $value ) {
+        if ( is_array( $value ) || is_object( $value ) ) {
+          $this->convert_to_xml( $value, $xml->addChild( $key ) );
+        } else {
+          $xml->addChild( $key, $value );
+        }
+      }
+      return $xml->asXML();
+    }
+
+    /**
+    *
+    * Encode/Decode data
+    *
+    * @access public
+    * @return string|array|bool|object
+    * @param string|arrray|object $value -> Data that need to be encoded/decoded
+    * @param string $type -> Output type
+    *
+    **/
+    public function output( $value, $type = 'xmle' ) {
+      $this->logData .= $this->log_string( "output() called" );
+
+      if ( is_null( $value ) )
+        return FALSE;
+
+      switch ( strtolower( $type ) ) {
+        case 'jsonencode':
+        case 'jsone':
+          $outputData = json_encode( $value );
+          break;
+        case 'jsondecode':
+        case 'jsond':
+          $outputData = json_decode( $value );
+          break;
+        case 'serialize':
+          $outputData = serialize( $value );
+          break;
+        case 'unserialize':
+          $outputData = unserialize( $value );
+          break;
+        case "base64encode":
+        case "base64e":
+          $outputData = base64_encode( $value );
+        break;
+        case "base64decode":
+        case "base64d":
+          $outputData = base64_decode( $value );
+        break;
+        case "bin2hex":
+        case "hexe":
+          $outputData = bin2hex( $value );
+        break;
+        case "hex2bin":
+        case "hexd":
+          $outputData = @pack( "H*", $value );
+        break;
+        case "uuencode":
+        case "uue":
+          $outputData = convert_uuencode( $value );
+        break;
+        case "uudecode":
+        case "uud":
+          $outputData = convert_uudecode( $value );
+        case 'xmlencode':
+        case 'xmle':
+          $output = Database::convert_to_xml( $value );
+          return ( $output ) ? $output : $this->output( $value, 'jsone' );
+          break;
+        default:
+          $outputData = json_encode( $value );
+          break;
+      }
+      return $outputData;
 
     }
 
+    /**
+    *
+    * Encode/Decode data
+    *
+    * @access public
+    * @return string|array|bool|object
+    * @param string|arrray|object $value -> Data that need to be encrypted
+    * @param string $type -> Output type
+    *
+    **/
     public function _encrypt( $value, $type = 'md5' ) {
+      $this->logData .= $this->log_string( "_encrypt() called" );
+
+      if ( is_null( $value ) )
+        return FALSE;
+
+      switch( strtolower( $type ) ) {
+        case "md5":
+          $outputData = md5( $value );
+        break;
+        case "md5d":
+          $outputData = md5( md5( $value ) );
+        break;
+        case "sha1":
+          $outputData = sha1( $value );
+        break;
+        case "crypt":
+          // encoding varies dependent on the OS
+          $outputData = crypt( $value );
+        break;
+        default:
+          $outputData = md5( $value );
+        break;
+      }
+      return $outputData;
 
     }
 
@@ -2174,6 +2492,8 @@
     *
     **/
     public function start_timer() {
+      $this->logData .= $this->log_string( "start_timer() called" );
+
       $this->startTime = microtime ( TRUE );
       return TRUE;
     }
@@ -2187,6 +2507,8 @@
     *
     **/
     public function stop_timer() {
+      $this->logData .= $this->log_string( "stop_timer() called" );
+
       return ( microtime ( TRUE ) - $this->startTime );
     }
 
@@ -2199,13 +2521,15 @@
     * Verify if cache has expired
     *
     * @access private
-    * @return bool
+    * @return bool|true
     *
     **/
     private function verify_cache() {
+      $this->logData .= $this->log_string( "verify_cache() called" );
+
       if ( $this->cacheAge == "0" ) {
 
-        $this->logData .= "Cache age not set<br />";
+        $this->logData .= $this->log_string( "Cache age not set", "error" );
         return FALSE;
 
       } else {
@@ -2214,12 +2538,12 @@
 
           if ( date( 'Y-m-d', $this->cacheMod ) != date( 'Y-m-d', time() ) ) {
 
-            $this->logData .= "cache has expired<br />";
+            $this->logData .= $this->log_string( "cache has expired", "error" );
             return FALSE;
 
           } else if ( ( time() - $this->cacheMod ) >= $this->cacheAge ) {
 
-            $this->logData .= "cache has expired<br />";
+            $this->logData .= $this->log_string( "cache has expired", "error" );
             return FALSE;
 
           } else {
@@ -2240,6 +2564,19 @@
 
     /**
     *
+    * Set Unique ID to make cache even more unique to user
+    *
+    * @access public
+    * @param $ID -> Cache unique id
+    *
+    **/
+    public function set_cache_id( $ID = NULL ) {
+      $this->logData .= $this->log_string( "set_cache_id() called" );
+      $this->cacheID = trim( $ID );
+    }
+
+    /**
+    *
     * Check if cache exists
     *
     * @access public
@@ -2247,11 +2584,11 @@
     *
     **/
     public function check_cache(){
-      $this->logData .= "check_cache() called<br />";
+      $this->logData .= $this->log_string( "check_cache() called" );
 
       if ( !file_exists( $this->cacheFile ) ) {
 
-        $this->logData .= $this->cacheFile . " does not exist<br />";
+        $this->logData .= $this->log_string( $this->cacheFile . " does not exist", "error" );
         $this->errorMsg[] = "Cache File: <em>" . $this->cacheFile . " does not exist</em>";
         return FALSE;
 
@@ -2272,23 +2609,25 @@
     *
     **/
     public function set_cache( $result = NULL ) {
-      $this->logData .= "set_cache() called<br />";
+      $this->logData .= $this->log_string( "set_cache() called" );
 
-      if ( is_null( $result) )
-        $result = $this->queryResult;
+      if ( ! is_null( $result) )
+        $this->queryResult = $result;
 
       if ( ! $cacheFile = @fopen( $this->cacheFile, "w" ) ) {
 
-        $this->logData .= "Could not open cache: ".$this->cacheFile."<br />";
-        $this->errorMsg[] = "Cache: <em>Could not open cache: ".$this->cacheFile."</em>";
+        $this->logData .= $this->log_string( "Could not open cache: " . $this->cacheFile, "error" );
+        $this->errorMsg[] = "Cache: <em>Could not open cache: " . $this->cacheFile . "</em>";
         return FALSE;
 
       }
 
-      if ( ! @fwrite( $cacheFile, $this->output( $result ) ) ) {
+      $output = $this->output( $this->queryResult );
 
-        $this->logData .= "Could not write to cache: ".$this->cacheFile."<br />";
-        $this->errorMsg[] = "Cache: <em>Could not write to cache: ".$this->cacheFile."</em>";
+      if ( ! fwrite( $cacheFile, $output ) ) {
+
+        $this->logData .= $this->log_string( "Could not write to cache: " . $this->cacheFile, "error" );
+        $this->errorMsg[] = "Cache: <em>Could not write to cache: " . $this->cacheFile . "</em>";
         fclose ( $cacheFile );
         return FALSE;
 
@@ -2308,14 +2647,14 @@
     *
     **/
     public function get_cache(){
-      $this->logData .= "get_cache() called<br />";
-      $this->logData .= "Query: " . $this->sqlQuery . "<br />";
+      $this->logData .= $this->log_string( "get_cache() called" );
+      $this->logData .= $this->log_string( $this->sqlQuery, "query" );
 
       $this->start_timer();
 
       if ( !$cacheFile = @file_get_contents( $this->cacheFile ) ) {
 
-        $this->logData .= "Could not read cache " . $this->cacheFile . "<br />";
+        $this->logData .= $this->log_string( "Could not read cache " . $this->cacheFile, "error" );
         $this->errorMsg[] = "Cache: <em>Could not read cache " . $this->cacheFile . "</em>";
         return FALSE;
 
@@ -2323,7 +2662,7 @@
 
       if ( !$this->queryResult = json_decode( $cacheFile ) ) {
 
-        $this->logData .= "get_cache() failed<br />";
+        $this->logData .= $this->log_string( "get_cache() failed", "error" );
         return FALSE;
 
       }
@@ -2331,8 +2670,8 @@
       $timeTaken = $this->stop_timer();
       $this->numRows = count( $this->queryResult );
 
-      // Debug
-      if ( $this->Debug ) {
+      // debug
+      if ( $this->debug ) {
 
         $this->debug_data( $timeTaken, $this->sqlQuery, 'cache' );
 
@@ -2352,10 +2691,12 @@
     *
     **/
     private function debug_data( $timeTaken, $SQL, $queryType = "db" ) {
+      $this->logData .= $this->log_string( "debug_data() called" );
+
       $this->queryCount++;
       $time = number_format ( $timeTaken, 8 );
       $this->queryTime += $time;
-      $this->queryDebug[$this->queryCount] = array (
+      $this->querydebug[$this->queryCount] = array (
                                 'Query' => $SQL,
                                 'Time' => $time,
                                 'Type' => $queryType
@@ -2372,7 +2713,8 @@
     * @author http://css-tricks.com
     *
     **/
-    function cleanInput( $input ) {
+    function clean_input( $input ) {
+      $this->logData .= $this->log_string( "clean_input() called" );
 
       $search = array(
         '@<script[^>]*?>.*?</script>@si',   // Strip out javascript
@@ -2396,6 +2738,7 @@
     *
     **/
     public function filter( $var ) {
+      $this->logData .= $this->log_string( "filter() called" );
       $unwantedString = '/[^\.\/\,\-\_\'\"\@\?\!\:\$\+ a-zA-Z0-9()]/';
       return preg_replace( $unwantedString, '', $var );
     }
@@ -2410,12 +2753,11 @@
     * @author http://css-tricks.com/snippets/php/sanitize-database-inputs/
     *
     **/
-    public function escape( $input ) {
-      $this->logData .= "escape() called<br />";
+    public function escape( $input, $quote = TRUE ) {
+      $this->logData .= $this->log_string( "escape() called" );
 
       // Make a connection to the database if not connected
-      if ( ! $this->is_db_connected() ) {
-
+      if ( ! $this->is_connected() ) {
         $this->connect();
 
       }
@@ -2432,13 +2774,13 @@
         // from the beginning and end of the string
         $input = trim( $input );
 
+        if ( get_magic_quotes_gpc() )
+          $input = stripslashes( $input );
+
+
+        $input = $this->clean_input( $input );
+
         if ( ! $this->PDO ) {
-
-          if ( get_magic_quotes_gpc() )
-            $input = stripslashes( $input );
-
-
-          $input = $this->cleanInput( $input );
 
           switch ( $this->dbType ) {
             case "mysql":
@@ -2475,7 +2817,7 @@
 
         } else {
 
-          $string = $this->conn->quote( $input );
+          $string = ( $quote ) ? $this->conn->quote( $input ) : $input;
 
         }
 
