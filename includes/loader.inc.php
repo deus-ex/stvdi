@@ -217,9 +217,11 @@
 
       if ( is_array( $class ) ) {
         foreach ($class as $key) {
+          //$this->init_class( $class );
           return $this->verify_file( $this->classPath, $class );
         }
       } else if ( is_string( $class ) ) {
+        //$this->init_class( $class );
         return $this->verify_file( $this->classPath, $class );
 
       } else {
@@ -284,8 +286,8 @@
     *
     **/
     public function init_class( $class ) {
-
-      $$classArray = new $class;
+      $classStr = ucwords( $class );
+      $$class = new $$classStr;
 
     }
 
