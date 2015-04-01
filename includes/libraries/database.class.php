@@ -283,6 +283,26 @@
 
     /**
     *
+    * Cache encode
+    *
+    * @access private
+    * @var string
+    *
+    **/
+    private $cacheEncode = 'jsone';
+
+    /**
+    *
+    * Cache decode
+    *
+    * @access private
+    * @var string
+    *
+    **/
+    private $cacheDecode = 'jsond';
+
+    /**
+    *
     * Cache filename & directory
     *
     * @access private
@@ -315,11 +335,11 @@
     *
     * Cache Unique ID
     *
-    * @access public
+    * @access private
     * @var string
     *
     **/
-    var $cacheID = NULL;
+    private $cacheID = NULL;
 
     /**
     *
@@ -381,7 +401,6 @@
     * @param array
     *
     **/
-
     public function __construct( $config = array() ) {
       $this->logData = $this->log_string( "Database() Initialized" );
       $this->dbType = ( isset( $config['db_type'] ) ) ? $config['db_type'] : 'mysqli';
@@ -396,6 +415,8 @@
       $this->PDO = ( isset( $config['PDO'] ) ) ? $config['PDO'] : $this->PDO;
       $this->cache = ( isset( $config['cache'] ) ) ? $config['cache'] : $this->cache;
       $this->cacheDir = ( isset( $config['cache_path'] ) ) ? $config['cache_path'] : $this->cacheDir;
+      $this->cacheEncode = ( isset( $config['cache_encode'] ) ) ? $config['cache_encode'] : $this->cacheEncode;
+      $this->cacheDecode = ( isset( $config['cache_decode'] ) ) ? $config['cache_decode'] : $this->cacheDecode;
       $this->debug = ( isset( $config['debug'] ) ) ? $config['debug'] : $this->debug;
 
       if ( ! $this->is_connected() ) {
@@ -2388,7 +2409,7 @@
     * @param string $type -> Output type
     *
     **/
-    public function output( $value, $type = 'xmle' ) {
+    public function output( $value, $type = 'jsone' ) {
       $this->logData .= $this->log_string( "output() called" );
 
       if ( is_null( $value ) )
@@ -2518,7 +2539,36 @@
 
     /**
     *
-    * Verify if cache has expired
+    * Set cache output
+    *
+    * @access public
+    * @param $encode -> Cache encode type i.e jsonencode/jsone, serialize,
+    *                   base64encode/base64e, bin2hex/hexe, uuencode/uue
+    * @param $decode -> Cache decode type i.e jsondecode/jsond, unserialize,
+    *                   base64decode/base64d, hex2bin/hexd, uudecode/uud
+    *
+    **/
+    public function set_cache_output( $encode = NULL, $decode = NULL ) {
+      $this->cacheEncode = ( ! is_null( $encode ) ) ? $encode : $this->cacheEncode;
+      $this->cacheDecode = ( ! is_null( $decode ) ) ? $decode : $this->cacheDecode;
+    }
+
+    /**
+    *
+    * Set Unique ID to make cache even more unique to user
+    *
+    * @access public
+    * @param $ID -> Cache unique id
+    *
+    **/
+    public function set_cache_id( $ID = NULL ) {
+      $this->logData .= $this->log_string( "set_cache_id() called" );
+      $this->cacheID = trim( $ID );
+    }
+
+    /**
+    *
+    * Verify if cache existed and has expired
     *
     * @access private
     * @return bool|true
@@ -2560,19 +2610,6 @@
 
       }
 
-    }
-
-    /**
-    *
-    * Set Unique ID to make cache even more unique to user
-    *
-    * @access public
-    * @param $ID -> Cache unique id
-    *
-    **/
-    public function set_cache_id( $ID = NULL ) {
-      $this->logData .= $this->log_string( "set_cache_id() called" );
-      $this->cacheID = trim( $ID );
     }
 
     /**
