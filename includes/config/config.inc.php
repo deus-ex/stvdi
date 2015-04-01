@@ -67,6 +67,15 @@
     // Cache folder
     'cache_path' => '/cache',
 
+    // Cache output
+    // Type:    json (jsone/jsonencode -> json encode, jsond/jsondecode -> json decode)
+    //          serialize (serialize, unserialize )
+    //          base64 (base64e/base64encode -> base64 encode, base64d/base64decode -> base64 decode)
+    //          hex (bin2hex/hexe -> hex encode, hex2bin/hexd -> hex decode)
+    //          uuencode (uue/uuencode -> uu encode, uud/uudecode -> uu decode)
+    //'cache_encode' => 'jsone',
+    //'cache_decode' => 'jsond',
+
     /*
     *
     * Language information
