@@ -118,12 +118,12 @@
         $label .= '</label>';
         break;
       case 'top':
-        $label = '<label for="' . $for . '">' . $title . '</label>';
+        $label = '<label for="' . $for . '">' . $attr['title'] . '</label>';
         $label .= $input;
         break;
       case 'bottom':
         $label = $input;
-        $label .= '<label for="' . $for . '">' . $title . '</label>';
+        $label .= '<label for="' . $for . '">' . $attr['title'] . '</label>';
         break;
       default:
         $label = $input;
