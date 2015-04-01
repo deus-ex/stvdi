@@ -14,17 +14,17 @@
 	# RewriteRule ^(/source/.+\.php)s$ $1 [H=application/x-httpd-php-source]
 
 	# First Parameter
-	RewriteRule		^([a-zA-Z0-9\-]+)/?$	index.php?uniq=$1 [L,QSA]
+	RewriteRule		^([a-zA-Z0-9\-]+)/?$	index.php?uname=$1 [L,QSA]
 
 	# Second Parameter
-	RewriteRule		^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/?$	index.php?uniq=$1&page=$2 [L,QSA]
+	RewriteRule		^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/?$	index.php?uname=$1&page=$2 [L,QSA]
 
 	# Third Parameter
-	RewriteRule     ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/?$   index.php?uniq=$1&page=$2&action=$3 [L,QSA]
-	RewriteRule     ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+):([a-zA-Z0-9\-]+)/?$   index.php?uniq=$1&page=$2&action=:$3 [L,QSA]
+	RewriteRule     ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/?$   index.php?uname=$1&page=$2&action=$3 [L,QSA]
+	RewriteRule     ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+):([a-zA-Z0-9\-]+)/?$   index.php?uname=$1&page=$2&action=:$3 [L,QSA]
 
 	# Four Parameter
-	RewriteRule     ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/([0-9]+)/?$    index.php?uniq=$1&page=$2&action=$3&query=$4 [L,QSA]
+	RewriteRule     ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/([0-9]+)/?$    index.php?uname=$1&page=$2&action=$3&query=$4 [L,QSA]
 
 	# this block php header redirect error
 	PHP_FLAG output_buffering on
