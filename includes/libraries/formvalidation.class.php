@@ -26,7 +26,7 @@
     * @var array
     *
     **/
-    public $formFields = array();
+    private $formFields;
 
     /**
     *
@@ -46,27 +46,27 @@
     * @var array
     *
     **/
-    public $validationRules;
+    private $validationRules;
 
     /**
     *
-    * Validation rules
+    * Validation rule values
     *
     * @access private
     * @var array
     *
     **/
-    public $resultList = array();
+    private $resultList = array();
 
     /**
     *
-    * Validation rules
+    * User define values
     *
     * @access private
     * @var array
     *
     **/
-    public $findReplace = array();
+    private $findReplace = array();
 
     /**
     *
@@ -76,13 +76,20 @@
     const REGEXP_EMAIL = '/^[a-zA-Z0-9._%-]+@([a-zA-Z0-9.-]+\.)+[a-zA-Z]{2,4}$/u';
     const REGEXP_EMPTY = '[a-z0-9A-Z]+';
     const REGEXP_ALPHA = '/^[A-Z.]+$/i';
-    const REGEXP_NUM = '^[0-9+]+$';
     const REGEXP_ALPHANUM = '^[0-9a-zA-Z ,.-_\\s\?\!]+\$';
     const REGEXP_IP = '/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}$/';
     const REGEXP_FLOAT = '/^[0-9]+(.[0-9]+)?$/';
     const REGEXP_DATE_DASH = '^[0-9]{1,2}[-/][0-9]{1,2}[-/][0-9]{4}\$';
     const REGEXP_DATE_SLASH = '^[0-9]{1,2}[//][0-9]{1,2}[//][0-9]{4}\$';
     const REGEXP_AMOUNT = '^[-]?[0-9]+\$';
+
+    /**
+    *
+    * Default value constants
+    *
+    */
+    const MIN = 5;
+    const MAX = 14;
 
     /**
     *
@@ -93,9 +100,11 @@
     const ERROR_EMPTY = 'Please enter a value for {field}.';
     const ERROR_SELECT_EMPTY = 'Please select a value for {field}.';
     const ERROR_ALPHA = 'This {field} should contain only alphabetic characters';
-    const ERROR_ALPHA_DASH = 'This {field} should contain only alphabetic characters with either underscore or dash ';
-    const ERROR_ALPHA_NUM = 'This {field} should contain both letters and numbers';
+    const ERROR_ALPHADASH = 'This {field} should contain only alphabetic characters with either underscore or dash ';
+    const ERROR_ALPHANUM = 'This {field} should contain both letters and numbers';
     const ERROR_NUMERIC = 'The {field} must be a number.';
+    const ERROR_INTEGER = 'The {field} must be an integer.';
+    const ERROR_FLOAT = 'The {field} must be a float.';
     const ERROR_ARRAY = 'The {field} must be an array.';
 
     const ERROR_EMAIL = 'The {field} format is invalid.';
@@ -113,16 +122,16 @@
     const ERROR_MIN_FILE = 'The {field} must be at least {min}KB.';
     const ERROR_MIN_STRING = 'The {field} must be at least {min} characters.';
     const ERROR_MIN_ARRAY = 'The {field} must have at least {min} items.';
+
     const ERROR_BETWEEN = 'This {field} must be a {min} and a {max}.';
 
-    const ERROR_IP = 'The {field} must be a valid IP address.';
+    const ERROR_IPV4 = 'The {field} must be a valid IPV4 address.';
+    const ERROR_IPV6 = 'The {field} must be a valid IPV6 address.';
 
     const ERROR_IMAGE = 'The {field} must be an image.';
 
     const ERROR_COMFIRMED = 'The {field} confirmation does not match.';
     const ERROR_ACCEPTED = 'Please check to accept {field}.';
-
-    const ERROR_INTEGER = 'The {field} must be an integer.';
 
     const ERROR_DATE = 'The {field} is not a valid date.';
     const ERROR_BEFORE_DATE = 'The {field} must be a date before {date}.';
@@ -138,7 +147,7 @@
     * @var array
     *
     **/
-    public $errorMsg = array();
+    protected $errorMsg = array();
 
     /**
     *
@@ -146,11 +155,11 @@
     * properties
     *
     * @access public
-    * @param array
     *
     **/
     public function __constructor() {
       $this->validationRules = array();
+      $this->formFields = array();
 
     }
 
@@ -168,122 +177,136 @@
 
         foreach ( $options['validate'] as $key => $option ) {
 
-          if ( strtolower( $key ) == 'required' ) {
-              $this->resultList = $this->get_validate_value( $option );
-              if ( ! $this->is_set( $fieldName ) ) {
-                // Set key variable values
-                  $this->set_replace_keys( $fieldName );
-                  if ( isset( $this->resultList['custom'] ) ) {
-                    $this->custom_error( $fieldName, $this->resultList['custom'], self::ERROR_REQUIRED );
-                  } else {
-                    $this->errorMsg[$fieldName] = $this->replace( self::ERROR_REQUIRED, $this->findReplace );
-                  }
-                return FALSE;
-              }
-          } else {
-            // Trim whitespace from beginning and end of variable
-            $this->formFields[$fieldName] = trim( $this->formFields[$fieldName] );
-          }
+          // Check if the $key has bool or string value
+          if ( $option === TRUE || ! is_null( $option ) ) {
+
+            // get validation settings/options
+            $this->resultList = $this->get_validate_value( $option );
+            // Set key variable values
+            $this->set_replace_keys( $fieldName );
+
+            if ( strtolower( $key ) == 'required' ) {
+                if ( ! isset( $this->formFields[$fieldName] ) ) {
+                  $this->set_error_message( $fieldName, self::ERROR_REQUIRED );
+                  return FALSE;
+                }
+            } else {
+              // Trim whitespace from beginning and end of variable
+              $this->formFields[$fieldName] = trim( $this->formFields[$fieldName] );
+            }
 
             switch ( strtolower( $key ) ) {
               case 'empty':
-                $this->resultList = $this->get_validate_value( $option );
                 if ( empty( $this->formFields[$fieldName] ) || ( strlen( $this->formFields[$fieldName] ) == 0 ) ) {
-                  $this->set_replace_keys( $fieldName );
-                  if ( isset( $this->resultList['custom'] ) ) {
-                    $this->custom_error( $fieldName, $this->resultList['custom'], self::ERROR_EMPTY );
-                  } else {
-                    $this->errorMsg[$fieldName] = $this->replace( self::ERROR_EMPTY, $this->findReplace );
-                  }
+                  $this->set_error_message( $fieldName, self::ERROR_EMPTY );
+                  return FALSE;
+                }
+                break;
+              case 'selempty':
+              case 'selectempty':
+              case 'sel_empty':
+              case 'select_empty':
+                if ( empty( $this->formFields[$fieldName] ) || ( strlen( $this->formFields[$fieldName] ) == 0 ) ) {
+                  $this->set_error_message( $fieldName, self::ERROR_SELECT_EMPTY );
                   return FALSE;
                 }
                 break;
               case 'min':
-                $this->resultList = $this->get_validate_value( $option );
-                if ( strlen( $this->formFields[$fieldName] ) < trim( $this->resultList['min'] ) ) {
-                  $this->set_replace_keys( $fieldName );
-                  if ( isset( $this->resultList['custom'] ) ) {
-                    $this->custom_error( $fieldName, $this->resultList['custom'], self::ERROR_MIN_NUM );
-                  } else {
-                    $this->errorMsg[$fieldName] = $this->replace( self::ERROR_MIN_NUM, $this->findReplace );
-                  }
+              case 'min_num':
+                if ( ! isset( $this->resultList['min'] ) || empty( $this->resultList['min'] ) ) {
+                  $min = self::MIN;
+                  $this->findReplace['{min}'] = $min;
+                } else {
+                  $min = $this->resultList['min'];
+                }
+
+                if ( strlen( $this->formFields[$fieldName] ) < trim( $min ) ) {
+                  $this->set_error_message( $fieldName, self::ERROR_MIN_NUM );
                   return FALSE;
                 }
                 break;
              case 'max':
-                $this->resultList = $this->get_validate_value( $option );
-                if ( strlen( $this->formFields[$fieldName] ) > trim( $this->resultList['max'] ) ) {
-                  $this->set_replace_keys( $fieldName );
-                  if ( isset( $this->resultList['custom'] ) ) {
-                    $this->custom_error( $fieldName, $this->resultList['custom'], self::ERROR_MIN_NUM );
-                  } else {
-                    $this->errorMsg[$fieldName] = $this->replace( self::ERROR_MIN_NUM, $this->findReplace );
-                  }
+             case 'max_num':
+                if ( ! isset( $this->resultList['max'] ) || empty( $this->resultList['max'] ) ) {
+                  $max = self::MAX;
+                  $this->findReplace['{max}'] = $max;
+                } else {
+                  $max = $this->resultList['max'];
+                }
+
+                if ( strlen( $this->formFields[$fieldName] ) > trim( $max ) ) {
+                  $this->set_error_message( $fieldName, self::ERROR_MAX_NUM );
                   return FALSE;
                 }
                 break;
               case 'email':
-                $this->resultList = $this->get_validate_value( $option );
                 if ( ! preg_match( self::REGEXP_EMAIL, $this->formFields[$fieldName] ) ) {
-                  $this->set_replace_keys( $fieldName );
-                  if ( isset( $this->resultList['custom'] ) ) {
-                    $this->custom_error( $fieldName, $this->resultList['custom'], self::ERROR_EMAIL );
-                  } else {
-                    $this->errorMsg[$fieldName] = $this->replace( self::ERROR_EMAIL, $this->findReplace );
-                  }
+                  $this->set_error_message( $fieldName, self::ERROR_EMAIL );
                   return FALSE;
                 }
                 break;
               case 'alpha':
-                $this->resultList = $this->get_validate_value( $option );
                 if ( ! preg_match( self::REGEXP_ALPHA, $this->formFields[$fieldName] ) ) {
-                  $this->set_replace_keys( $fieldName );
-                  if ( isset( $this->resultList['custom'] ) ) {
-                    $this->custom_error( $fieldName, $this->resultList['custom'], self::ERROR_MIN_NUM );
-                  } else {
-                    $this->errorMsg[$fieldName] = $this->replace( self::ERROR_MIN_NUM, $this->findReplace );
-                  }
+                   $this->set_error_message( $fieldName, self::ERROR_ALPHA );
+                 return FALSE;
+                }
+                break;
+              case 'alphanum':
+              case 'alphanumeric':
+                if ( ! preg_match( self::REGEXP_ALPHANUM, $this->formFields[$fieldName] ) ) {
+                  $this->set_error_message( $fieldName, self::ERROR_ALPHANUM );
                   return FALSE;
                 }
                 break;
+              case 'num':
               case 'numeric':
-                $this->resultList = $this->get_validate_value( $options['validate']['empty'] );
-                if ( ! preg_match( self::REGEXP_NUM, $this->formFields[$fieldName] ) ) {
-                  $this->set_replace_keys( $fieldName );
-                  if ( isset( $this->resultList['custom'] ) ) {
-                    $this->custom_error( $fieldName, $this->resultList['custom'], self::ERROR_MIN_NUM );
-                  } else {
-                    $this->errorMsg[$fieldName] = $this->replace( self::ERROR_MIN_NUM, $this->findReplace );
-                  }
+                if ( ! is_numeric( $this->formFields[$fieldName] ) ) {
+                  $this->set_error_message( $fieldName, self::ERROR_NUMERIC );
+                  return FALSE;
+                }
+                break;
+              case 'int':
+              case 'integer':
+                if ( ! ctype_digit( strval( $this->formFields[$fieldName] ) ) ) {
+                  $this->set_error_message( $fieldName, self::ERROR_INTEGER );
+                  return FALSE;
+                }
+                break;
+              case 'float':
+                if ( ! is_float( $this->formFields[$fieldName] + 0 ) || ! preg_match( self::REGEXP_FLOAT, $this->formFields[$fieldName] ) ) {
+                  $this->set_error_message( $fieldName, self::ERROR_FLOAT );
+                  return FALSE;
+                }
+                break;
+              case 'array':
+                if ( ! is_array( $this->formFields[$fieldName] ) ) {
+                  $this->set_error_message( $fieldName, self::ERROR_ARRAY );
+                  return FALSE;
+                }
+                break;
+              case 'ipv4':
+                if ( filter_var( $this->formFields[$fieldName], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) === FALSE ) {
+                  $this->set_error_message( $fieldName, self::ERROR_IPV4 );
+                  return FALSE;
+                }
+                break;
+              case 'ipv4':
+                if ( filter_var( $this->formFields[$fieldName], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 ) === FALSE ) {
+                  $this->set_error_message( $fieldName, self::ERROR_IPV6 );
                   return FALSE;
                 }
                 break;
             }
 
+          }
+
         }
       }
-    }
 
-    /**
-     *
-     * Check if form input is set
-     *
-     * @access private
-     * @param string $fieldName -> The form input to check
-     *
-     */
-    private function is_set( $fieldName, $custom = NULL ) {
-        if ( ! isset( $this->formFields[$fieldName] ) ) {
-          // $findReplace['{field}'] = $this->validationRules[$fieldName]['field'];
-
-          // $error = ( is_null( $custom ) ) ? self::ERROR_REQUIRED : $custom;
-          // $this->errors[$fieldName] = $this->replace( $error, $this->findReplace );
-          $this->custom_error( $fieldName, $this->resultList['custom'], self::ERROR_REQUIRED );
-          return FALSE;
-        }
+      if ( empty( $this->errorMsg ) ) {
         return TRUE;
+      }
     }
-
 
     /**
     *
@@ -305,6 +328,23 @@
     }
 
     /**
+     *
+     * Set error message
+     *
+     * @access private
+     * @param string $fieldName -> The form input to check
+     * @param string $defaultError -> Default error message
+     *
+     */
+    private function set_error_message( $fieldName, $defaultError ) {
+      if ( ! is_null( $this->resultList ) && isset( $this->resultList['custom'] ) ) {
+        $this->custom_error( $fieldName, $this->resultList['custom'], $defaultError );
+      } else {
+        $this->errorMsg[$fieldName] = $this->replace( $defaultError, $this->findReplace );
+      }
+    }
+
+    /**
     *
     * Set custom error message
     *
@@ -315,31 +355,12 @@
     *
     **/
     private function custom_error( $fieldName, $customMsg, $errorMsg ) {
-
-//       foreach ( $ruleValues as $key => $value ) {
-// var_dump($value);
-//         switch ( strtolower( $key ) ) {
-//           case 'custom':
-            //$this->replace( $error, $findReplace );
-            $trimCustomMsg = trim( $customMsg );
-            $this->errorMsg[$fieldName] = ( ! is_null( $trimCustomMsg ) ) ? $this->replace( $trimCustomMsg, $this->findReplace ) : $this->replace( $errorMsg, $this->findReplace );
-            // return $this->custom_error( $fieldName, $errorMsg, $value );
-            // break;
-          // case 'exp':
-          // case 'expression':
-          //   //return $this->custom_error( $fieldName, $errorMsg, $value );
-          //   break;
-          // case 'val':
-          // case 'value':
-          //   //return $this->custom_error( $fieldName, $errorMsg, $value );
-          //   break;
-          // case 'url':
-          // case 'web':
-          //   //return $this->custom_error( $fieldName, $errorMsg, $value );
-          //   break;
-        // }
-
-      // }
+      $trimCustomMsg = trim( $customMsg );
+      if ( ! is_null( $trimCustomMsg ) ):
+        $this->errorMsg[$fieldName] = $this->replace( $trimCustomMsg, $this->findReplace );
+      else:
+        $this->errorMsg[$fieldName] = $this->replace( $errorMsg, $this->findReplace );
+      endif;
     }
 
     /**
@@ -382,25 +403,11 @@
     * @access private
     * @return array
     * @param string|array $keyValue -> The validate rule values
+    * @param string $delimiter -> $keyValue delimiter
     *
     **/
     private function string_to_array( $keyValue, $delimiter = '|' ) {
       return explode( $delimiter, $keyValue );
-    }
-
-    /**
-    *
-    * Set custom error message
-    *
-    * @access private
-    * @param string $errorMsg -> The default error message
-    * @param string $fieldName -> The form input name
-    * @param string $customMsg -> The validation rule custom error message
-    *
-    **/
-    private function custom_error1( $fieldName, $errorMsg, $customMsg = NULL ) {
-      //$validateRule = $this->validationRules[$fieldName]['validate'][$customKey];
-      $this->errors[$fieldName] = ( ! is_null( $customMsg ) ) ? $customMsg : $errorMsg;
     }
 
     /**
@@ -413,7 +420,10 @@
      * @param array $findReplace -> Array of key and value to replace
      *
      */
-    private function replace( $haystack, array $findReplace ) {
+    private function replace( $haystack, $findReplace = NULL ) {
+      if ( is_null( $findReplace ) || ! is_array( $findReplace ) )
+        return $haystack;
+
       foreach ( $findReplace as $find => $replace ) {
         $haystack = str_replace( $find, $replace, $haystack );
       }
@@ -450,19 +460,6 @@
 
     /**
     *
-    * Validate an array of form input according to each
-    * individual rules
-    *
-    * @access public
-    * @return bool
-    *
-    **/
-    public function form() {
-
-    }
-
-    /**
-    *
     * Validate a single input according to single rule
     *
     * @access public
@@ -484,6 +481,7 @@
     public function sanitize( $inputFields ) {
 
       foreach( $inputFields as $fieldName => $fieldValue ) {
+
         if ( ( array_search( $fieldName, $this->sanitizeFields ) === FALSE ) && ( ! array_key_exists( $fieldName, $this->sanitizeFields ) ) )
           continue;
 
@@ -529,10 +527,10 @@
 
     /**
     *
-    * Close/kill the database connection and query results
+    * Return validation errors
     *
     * @access public
-    * @return bool
+    * @return array
     *
     **/
     public function errors() {
