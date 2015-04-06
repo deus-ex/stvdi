@@ -2416,10 +2416,10 @@
         return FALSE;
 
       switch ( strtolower( $type ) ) {
-        case 'jsonencode':
-        case 'jsone':
-          $outputData = json_encode( $value );
-          break;
+        // case 'jsonencode':
+        // case 'jsone':
+        //   $outputData = json_encode( $value );
+        //   break;
         case 'jsondecode':
         case 'jsond':
           $outputData = json_decode( $value );
@@ -2458,6 +2458,8 @@
           $output = Database::convert_to_xml( $value );
           return ( $output ) ? $output : $this->output( $value, 'jsone' );
           break;
+        case 'jsonencode':
+        case 'jsone':
         default:
           $outputData = json_encode( $value );
           break;
@@ -2483,9 +2485,9 @@
         return FALSE;
 
       switch( strtolower( $type ) ) {
-        case "md5":
-          $outputData = md5( $value );
-        break;
+        // case "md5":
+        //   $outputData = md5( $value );
+        // break;
         case "md5d":
           $outputData = md5( md5( $value ) );
         break;
@@ -2496,6 +2498,7 @@
           // encoding varies dependent on the OS
           $outputData = crypt( $value );
         break;
+        case "md5":
         default:
           $outputData = md5( $value );
         break;
