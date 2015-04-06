@@ -23,7 +23,14 @@
   require( APP_DIR . INC . '/config/config.inc.php' );
   require( APP_DIR . INC . '/loader.inc.php' );
 
-  // Auto load required classes and functions
+  /**
+  *
+  * Auto load requires classes and functions
+  *
+  * Auto load object
+  * @global object $loader
+  *
+  */
   $GLOBALS['loader'] = new auto_loader();
 
   // Load all functions and class library
@@ -40,7 +47,6 @@
   // Custom cache storage location
   // Note: It should come before database object initialization
   $config['cache_path'] = APP_DIR . $config['uploads'] . '/' . get_uname() . '/caches/';
-  echo $config['cache_path'];
 
   /**
   *
@@ -49,6 +55,41 @@
   *
   */
   $GLOBALS['database'] = new Database( $config );
+
+  // Language directory
+  $languageDir = APP_DIR . $config['language'] . '/';
+
+  /**
+  *
+  * Language object
+  * @global object $language
+  *
+  */
+  $GLOBALS['language'] = new Language( $languageDir );
+
+  /**
+  *
+  * Form object
+  * @global object $form
+  *
+  */
+  $GLOBALS['form'] = new FormBuilder;
+
+  /**
+  *
+  * Form validation object
+  * @global object $validator
+  *
+  */
+  $GLOBALS['validator'] = new Formvalidation();
+
+  /**
+  *
+  * Pagination object
+  * @global object $paginator
+  *
+  */
+  $GLOBALS['paginator'] = new Pagination();
 
   /**
   *
@@ -71,9 +112,6 @@
   } else {
     $page->load();
   }
-
-  // Initialization of form validation class
-  $GLOBALS['validator'] = new Formvalidation();
 
 
 
