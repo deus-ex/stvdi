@@ -187,22 +187,28 @@
     // Include folder
     'include' => '/includes',
 
+    // Libraries folder
+    'class' => '/includes/classes',
+
     // Config folder
     'config' => '/includes/config',
 
-    // functions folder
+    // Functions folder
     'function' => '/includes/functions',
 
-    // Classes folder
-    'class' => '/includes/libraries',
+    // Language folder
+    'language' => '/includes/languages',
 
-    // Classes folder
+    // Libraries folder
+    'libraries' => '/includes/libraries',
+
+    // Template folder
     'template' => '/template',
 
     // Images folder
     'images' => '/images',
 
-    // Images folder
+    // Icons folder
     'ico' => '/images/icons',
 
     // Javascript folder
