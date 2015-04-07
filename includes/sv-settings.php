@@ -99,14 +99,23 @@
   */
   $GLOBALS['page'] = new Page();
 
+  // Default template folder
+  $tempFolder = APP_DIR . $config['template'] . '/';
+
+  // Set the template folder
+  $page->set_template( $tempFolder );
+
   // !important: runs all page load
   if ( get_page() && ! get_action() ) {
-    $page->load( get_page() );
+    $page->load( get_page(), get_page() );
   } else if ( get_page() && get_action() ) {
+    // Work on this part as soon as individual pages
+    // has been created and organized
     $buildPage = get_page() . '-' . get_action();
     if ( ! check_action() ) {
-      $page->load( $buildPage );
+      $page->load( $buildPage, get_page() );
     } else {
+      // $page->load( $buildPage, get_page() );
       $page->load( get_page() );
     }
   } else {
