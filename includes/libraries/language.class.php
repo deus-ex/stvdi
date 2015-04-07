@@ -257,7 +257,7 @@
     *
     **/
     public function set_default_lang( string $defaultLang ) {
-      $this->defaultLang = ( substr( $defaultLang, -1 ) == '/' ) ? $defaultLang : $defaultLang;
+      $this->defaultLang = ( substr( $defaultLang, -1 ) == '/' ) ? $defaultLang : $defaultLang . '/';
     }
 
     /**
