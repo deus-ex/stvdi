@@ -66,6 +66,17 @@
 
   /**
   *
+  * Check if the page action ends with a colon (:)
+  *
+  * @return bool
+  *
+  **/
+  function check_action() {
+    return ( substr( get_action(), 0, 1 ) == ':' ) ? TRUE : FALSE;
+  }
+
+  /**
+  *
   * Remove http from url
   *
   * @return string
