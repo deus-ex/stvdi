@@ -36,7 +36,7 @@
     'db_pass' => '',
 
     // Database hostname
-    'db_host' => 'localhost',
+    'db_host' => '127.0.0.1',
 
     // Database charset
     'db_charset' => 'utf8',
@@ -45,7 +45,7 @@
     'db_collate' => 'utf8_general_ci',
 
     // Database table prefix
-    'db_prefix' => 'sv_',
+    'table_prefix' => 'sv_',
 
     // PDO (PHP Database Object)
     // TRUE if you want to use PDO
@@ -75,6 +75,15 @@
     //          uuencode (uue/uuencode -> uu encode, uud/uudecode -> uu decode)
     //'cache_encode' => 'jsone',
     //'cache_decode' => 'jsond',
+
+    /*
+    *
+    * Encryption Information
+    *
+    */
+
+    // Type of encryption
+    'encryption_type' => 'md5d',
 
     /*
     *
@@ -120,6 +129,21 @@
 
     /*
     *
+    * Login attempt
+    *
+    */
+
+    // Activate/deactivate login attempt
+    'attempt_status' => TRUE,
+
+    // Login attempt maximum count
+    'attempt_count' => 5,
+
+    // Login attempt restriction time (in seconds)
+    'attempt_time' => 60,
+
+    /*
+    *
     * Cookie information
     *
     */
@@ -132,6 +156,9 @@
 
     // Cookie path
     'cookie_path' => '/',
+
+    // Cookie domain
+    'cookie_domain' => '',
 
     /*
     *
@@ -180,6 +207,12 @@
 
     // Application name
     'app_name' => 'Stvdi',
+
+    // Application url
+    'app_url' => APP_URL,
+
+    // Application directory
+    'app_dir' => APP_DIR,
 
     // Display list information
     'list_limit' => 10,
