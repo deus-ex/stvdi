@@ -97,7 +97,7 @@
         $this->absPath = ( substr( $absPath, -1 ) == '/' ) ? $absPath : $absPath . '/';
       }
 
-      $this->init();
+      // $this->init();
     }
 
     /**
@@ -128,6 +128,18 @@
 
     /**
     *
+    * Start loader
+    *
+    * @access public
+    * @since 1.0.0
+    *
+    **/
+    public function load() {
+      $this->init();
+    }
+
+    /**
+    *
     * Specify extension(s) that may be loaded
     *
     * @access private
@@ -138,6 +150,58 @@
 
       spl_autoload_extensions( $this->acceptedExt );
 
+    }
+
+    /**
+    *
+    * Specify more class path
+    *
+    * @access public
+    * @since 1.0.0
+    * @param array|string $classPath -> Class path
+    *
+    **/
+    public function set_class_path( $classPath ) {
+      if ( is_array( $classPath) ) {
+        foreach ( $classPath as $path ) {
+          $this->classPath[] = $this->check_slash( $path );
+        }
+      } else {
+        $this->classPath[] = check_slash( $path );
+      }
+
+    }
+
+    /**
+    *
+    * Check if the user added a lagging slash or not
+    *
+    * @access private
+    * @since 1.0.0
+    * @param string $path -> Path
+    *
+    **/
+    private function check_slash( $path ) {
+      return ( substr( $path, -1 ) == '/' ) ? $path : $path . '/';
+    }
+
+    /**
+    *
+    * Specify more function path
+    *
+    * @access public
+    * @since 1.0.0
+    * @param array|string $functionPath -> Function path
+    *
+    **/
+    public function set_function_path( $functionPath ) {
+      if ( is_array( $functionPath) ) {
+        foreach ( $functionPath as $path ) {
+          $this->functionPath[] = $this->check_slash( $path );
+        }
+      } else {
+        $this->functionPath[] = $this->check_slash( $path );
+      }
     }
 
     /**
