@@ -27,6 +27,9 @@
     **/
     private $notAttributes = array(
                               'title',
+                              'tag',
+                              'prefix',
+                              'suffix',
                               'label',
                               'selected',
                               'button',
@@ -77,7 +80,7 @@
     **/
     public function open_tag( $attributes = NULL, $echo = TRUE ) {
       if ( ! empty( $attributes ) ) {
-        $attributes = $this->extract( $attributes );
+        $attributes = $this->extract_attr( $attributes );
         $form = '<form ' . $attributes . '>';
       } else {
         $form = '<form>';
@@ -168,26 +171,27 @@
       $id = ( ! empty( $attr['id'] ) ) ? ' for ="' . $attr['id'] . '"' : '';
       $for = ( ! empty( $attr['label']['for'] ) ) ? ' for ="' . $attr['label']['for'] . '"' : $id;
       $title = ( ! empty( $attr['label']['title'] ) ) ? $attr['label']['title'] : $attr['title'];
+      $tag = ( ! empty( $attr['label']['content_tag'] ) ) ? $this->content_tag( $title, $attr['label']['content_tag'], FALSE ) : $this->html_tag( $title );
       $input = '';
 
       switch ( strtolower( $type ) ) {
         case 'top':
-          $input = '<label' . $for . '>' . '<span>' . $title . '</span>' . '</label>';
+          $input = '<label' . $for . '>' . $tag . '</label>';
           $input .= $formInput;
           break;
         case 'bottom':
           $input = $formInput;
-          $input .= '<label' . $for . '>' . '<span>' . $title . '</span>' . '</label>';
+          $input .= '<label' . $for . '>' . $tag . '</label>';
           break;
         case 'cover-after':
           $input = '<label' . $for . '>';
           $input .= $formInput;
-          $input .= '<span>' . $title . '</span>';
+          $input .= $tag;
           $input .= '</label>';
           break;
         case 'cover-before':
           $input = '<label' . $for . '>';
-          $input .= '<span>' . $title . '</span>';
+          $input .= $tag;
           $input .= $formInput;
           $input .= '</label>';
           break;
@@ -201,6 +205,107 @@
 
       return $input;
 
+    }
+
+    /**
+    *
+    * Create HTML Tag around a content
+    *
+    * @access public
+    * @return string
+    * @param string $content -> Tag content
+    * @param string $tag -> HTML Tag
+    * @param string $attributes -> HTML Tag attributes
+    *
+    **/
+    private function html_tag( $content, $tag = 'span', $attributes = NULL ) {
+      $tagString = '';
+      $attr = ( ! empty( $attributes ) ) ? ' ' . $attributes : '';
+      switch ( strtolower( $tag ) ) {
+        case 'h1':
+          $tagString = '<H1' . $attr . '>' . $content .  '</H1>';
+          break;
+        case 'h2':
+          $tagString = '<H2' . $attr . '>' . $content .  '</H2>';
+          break;
+        case 'h3':
+          $tagString = '<H3' . $attr . '>' . $content .  '</H3>';
+          break;
+        case 'h4':
+          $tagString = '<H4' . $attr . '>' . $content .  '</H4>';
+          break;
+        case 'h5':
+          $tagString = '<H5' . $attr . '>' . $content .  '</H5>';
+          break;
+        case 'h6':
+          $tagString = '<H6' . $attr . '>' . $content .  '</H6>';
+          break;
+        case 'e':
+        case 'em':
+        case 'emphasized':
+          $tagString = '<em' . $attr . '>' . $content .  '</em>';
+          break;
+        case 'p':
+        case 'paragraph':
+          $tagString = '<p' . $attr . '>' . $content .  '</p>';
+          break;
+        case 's':
+        case 'strong':
+          $tagString = '<strong' . $attr . '>' . $content .  '</strong>';
+          break;
+        case 'b':
+        case 'bold':
+          $tagString = '<b' . $attr . '>' . $content .  '</b>';
+          break;
+        case 'span':
+          $tagString = '<span' . $attr . '>' . $content .  '</span>';
+          break;
+        case 'a':
+        case 'link':
+          $tagString = '<a' . $attr . '>' . $content .  '</a>';
+          break;
+        case 'i':
+        case 'italic':
+          $tagString = '<i' . $attr . '>' . $content .  '</i>';
+          break;
+        case 'div':
+        default:
+          $tagString = '<div' . $attr . '>' . $content .  '</div>';
+          break;
+      }
+      return $tagString;
+    }
+
+    /**
+    *
+    * Create an HTML Tag with attributes around a content
+    *
+    * @access public
+    * @return string
+    * @param string $content -> Content inside a tag
+    * @param array $attributes -> HTML Tag attributes
+    * @param bool $echo -> TRUE to echo element and FALSE to return element
+    *
+    **/
+    public function content_tag( $content, $attributes = NULL ) {
+      $tagContent = '';
+      if ( ! empty( $attributes ) ) {
+
+        if ( isset( $attributes['prefix'] ) )
+          $tagContent = $attributes['prefix'];
+
+        $attr = $this->extract_attr( $attributes );
+
+        $tagContent .= $this->html_tag( $content, $attributes['tag'], $attr );
+
+        if ( isset( $attributes['suffix'] ) )
+          $tagContent .= $attributes['suffix'];
+
+      } else {
+        $tagContent = $this->html_tag( $content, $attributes['tag'] );
+      }
+
+      return $tagContent;
     }
 
     /**
@@ -688,8 +793,25 @@
     * @param bool $echo -> True to echo content and false to return content
     *
     **/
-    public function display( $content, $echo = TRUE ) {
-      if ( $echo )
+    // Not done yet needs some tune up
+    public function token() {
+      // $randEncrypt = $this->db->_encrypt( uniqid( mt_rand(), true ), ENCRYPT );
+      // $this->db->set_session( $this->sessionName, $randEncrypt, 'token' );
+      return $randEncrypt;
+    }
+
+    /**
+    *
+    * Display option
+    *
+    * @access private
+    * @return mixed
+    * @param mixed $content -> Content to display
+    * @param bool $echo -> True to echo content and false to return content
+    *
+    **/
+    private function display( $content, $echo = TRUE ) {
+      if ( $echo === TRUE )
         echo $content;
       else
         return $content;
