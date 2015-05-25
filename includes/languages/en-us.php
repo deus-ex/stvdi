@@ -1,13 +1,18 @@
 <?php
 
+  $lang = array();
+
+  // Language file details
+  $lang['suffix'] = 'en-us';
+  $lang['title'] = 'English (US)';
+  $lang['desc'] = 'Native Language of the United State of America';
+  $lang['modified'] = '2015-05-24 01:05:30';
+  $lang['author'] = 'Jay';
+
+  // Login 
+
 	$lang	= array(
 
-		// language details
-		'suffix'	=> 'en-us',
-		'title'	=> 'English (US)',
-		'desc'	=> 'Native Language of the United of American',
-		'modified'	=> '2013-10-29 05:00:30',
-		'author'	=> 'Jay',
 
 
     // Login
@@ -36,7 +41,7 @@
     'invalid_auth_code'  => 'Sorry! This password reset link is invalid!.',
 
     // Empty Values
-    '                   cvhnnnnnnnnnnbjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj '  => 'Please enter {value}.',
+    'empty_field'  => 'Please enter {value}.',
     'empty_user_pass'  => 'Please enter your username/password.',
     'empty_password'  => 'Enter a Password.',
     'empty_old_password'  => 'Enter a Old Password.',
