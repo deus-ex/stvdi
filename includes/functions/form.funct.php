@@ -27,8 +27,11 @@
   **/
   function posted( $value, $echo = TRUE ) {
     if ( isset( $_POST[$value] ) ) {
-      $post = $_POST[$value];
-      display( $post, $echo );
+      if ( $echo === TRUE )
+        echo $_POST[$value];
+      else
+        return $_POST[$value];
+
     }
   }
 
