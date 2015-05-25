@@ -2,8 +2,8 @@
 
   /**
   *
-  *	This class is a template validation system and load all the necessary
-  * pages via clean url provided.
+  *	This class is use to load all the necessary pages via url
+  * provided.
   *
   *	@version:       2.0.0
   * @package        Stvdi
@@ -12,7 +12,7 @@
   *                 GNU General Public License (GPL)
   * @copyright:     Copyright (c) 2013 - 2015 Jencube
   * @twitter:       @deusex0 & @One_Oracle
-  * @filesource     includes/libraries/template.class.php
+  * @filesource     includes/libraries/page.class.php
   *
   **/
 
@@ -56,7 +56,7 @@
     * @var string
     *
     **/
-    private $errorPage = '404.php';
+    private $errorPage = '404';
 
     /**
     *
@@ -66,7 +66,7 @@
     * @var string
     *
     **/
-    private $defaultPage = 'home.php';
+    private $defaultPage = 'home';
 
     /**
     *
@@ -152,6 +152,7 @@
     *
     **/
     private function get_page( $file, $folder = NULL ) {
+      $newFile = ''; $indexFile = ''; $error = '';
       if ( ! empty( $folder ) ) {
         $newFile = $folder . '/' . $file;
         $indexFile = $folder . '/index.php';
@@ -205,6 +206,7 @@
     * @access private
     * @return string
     * @param string $pageStr -> The page name to load
+    * @param string $folder -> The folder where the page is located
     *
     **/
     private function build( $pageStr = NULL, $folder = NULL ) {
@@ -216,6 +218,33 @@
       }
     }
 
+    /**
+    *
+    * Set default page with extension
+    *
+    * @access public
+    * @return string
+    * @param string $page -> Page name
+    *
+    **/
+    public function set_default_page( $page ) {
+      $this->defaultPage = strtolower( trim( $page ) );
+    }
+
+
+    /**
+    *
+    * Set page extension
+    *
+    * @access public
+    * @return string
+    * @param string $ext -> Extension (ie: php, js, html...)
+    *
+    **/
+    public function set_extension( $ext ) {
+      $extension = strtolower( trim( $ext ) );
+      $this->extension = ( substr( $extension, 0, 1 ) == '.' ) ? $extension : '.' . $extension;
+    }
     /**
     *
     * Set page with extension
@@ -244,7 +273,7 @@
       if ( ! empty( $pageStr ) || ! empty( $folder ) ) {
         include( $this->build( $pageStr, $folder ) );
       } else {
-        include( $this->defaultPage );
+        include( $this->set_page( $this->defaultPage ) );
       }
     }
 
