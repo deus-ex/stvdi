@@ -18,6 +18,22 @@
 
   /**
   *
+  * Check if form element is posted
+  *
+  * @param array $attr -> form tag attributes
+  * @return string
+  * @since 1.0.0
+  *
+  **/
+  function posted( $value, $echo = TRUE ) {
+    if ( isset( $_POST[$value] ) ) {
+      $post = $_POST[$value];
+      display( $post, $echo );
+    }
+  }
+
+  /**
+  *
   * To display the open form tag
   *
   * @param array $attr -> form tag attributes
