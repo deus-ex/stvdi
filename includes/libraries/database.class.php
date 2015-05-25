@@ -79,7 +79,7 @@
     * @var integer
     *
     **/
-    protected $dbPort = 0;
+    protected $dbPort = 3306;
 
     /**
     *
@@ -183,7 +183,7 @@
 
     /**
     *
-    * PNumber of column in query result
+    * Number of column in query result
     *
     * @access public
     * @var integer
@@ -200,6 +200,16 @@
     *
     **/
     public $affectedRows = 0;
+
+    /**
+    *
+    * Get row data affected by delete()
+    *
+    * @access public
+    * @var object
+    *
+    **/
+    public $affectedData = NULL;
 
     /**
     *
@@ -364,7 +374,7 @@
 
     /**
     *
-    * debugging
+    * Activate/Deactivate debugging
     *
     * @access private
     * @var bool
@@ -374,7 +384,7 @@
 
     /**
     *
-    * debugging
+    * debug details
     *
     * @access public
     * @var array
@@ -384,7 +394,17 @@
 
     /**
     *
-    * debugging start time
+    * debugging query counter
+    *
+    * @access public
+    * @var integer
+    *
+    **/
+    var $queryCount;
+
+    /**
+    *
+    * debug start time
     *
     * @access public
     * @var integer
@@ -483,7 +503,7 @@
             break;
         }
 
-        if ( ! $this->conn ) {
+        if ( ! is_resource( $this->conn ) ) { // added is_resource()
           $this->logData .= $this->log_string( "Unable to connect to database: " . $this->sql_error(), "error" );
           $this->errorMsg[] = "Unable to connect to database: <em>" . $this->sql_error() . "</em>";
           return FALSE;
@@ -940,7 +960,7 @@
       if ( ! is_null ( $SQL ) )
         $this->sqlQuery = $SQL;
 
-      if ( $this->cache == TRUE && $this->verify_cache() ) {
+      if ( $this->cache === TRUE && $this->verify_cache() ) {
         return $this->get_cache();
       }
 
@@ -970,7 +990,7 @@
 
       $data = array();
 
-      if ( $this->cache == TRUE && $this->verify_cache() ) {
+      if ( $this->cache === TRUE && $this->verify_cache() ) {
 
         return $this->get_cache();
 
@@ -1006,12 +1026,12 @@
         $timeTaken = $this->stop_timer();
 
         // Cache
-        if ( $this->cache ) {
+        if ( $this->cache === TRUE ) {
           $this->set_cache();
         }
 
         // debug
-        if ( $this->debug ) {
+        if ( $this->debug === TRUE ) {
           $this->debug_data( $timeTaken, $this->sqlQuery );
         }
 
@@ -1049,7 +1069,7 @@
       $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
-      if ( $this->cache == TRUE && $this->verify_cache() ) {
+      if ( $this->cache === TRUE && $this->verify_cache() ) {
 
         return $this->get_cache();
 
@@ -1065,12 +1085,12 @@
         $timeTaken = $this->stop_timer();
 
         // Cache
-        if ( $this->cache ) {
+        if ( $this->cache === TRUE ) {
           $this->set_cache();
         }
 
         // debug
-        if ( $this->debug ) {
+        if ( $this->debug === TRUE ) {
           $this->debug_data( $timeTaken, $this->sqlQuery );
         }
 
@@ -1101,7 +1121,7 @@
       $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
-      if ( $this->cache == TRUE && $this->verify_cache() ) {
+      if ( $this->cache === TRUE && $this->verify_cache() ) {
 
         return $this->get_cache();
 
@@ -1148,12 +1168,12 @@
         $timeTaken = $this->stop_timer();
 
         // Cache
-        if ( $this->cache ) {
+        if ( $this->cache === TRUE ) {
           $this->set_cache();
         }
 
         // debug
-        if ( $this->debug ) {
+        if ( $this->debug === TRUE ) {
           $this->debug_data( $timeTaken, $this->sqlQuery );
         }
 
@@ -1184,7 +1204,7 @@
       $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
-      if ( $this->cache == TRUE && $this->verify_cache() ) {
+      if ( $this->cache === TRUE && $this->verify_cache() ) {
 
         return $this->get_cache();
 
@@ -1231,12 +1251,12 @@
         $timeTaken = $this->stop_timer();
 
         // Cache
-        if ( $this->cache ) {
+        if ( $this->cache === TRUE ) {
           $this->set_cache();
         }
 
         // debug
-        if ( $this->debug ) {
+        if ( $this->debug === TRUE ) {
           $this->debug_data( $timeTaken, $this->sqlQuery );
         }
 
@@ -1267,9 +1287,9 @@
       $cacheName = ( is_null( $this->cacheName ) ) ? md5( $this->cacheID . $this->sqlQuery ) : md5( $this->cacheName . '-' . $this->cacheID . $this->sqlQuery );
       $this->cacheFile = $this->cacheDir . $cacheName . '.cache';
 
-      if ( $this->cache == TRUE && $this->verify_cache() ) {
+      if ( $this->cache === TRUE && $this->verify_cache() ) {
 
-        return $this->get_cache();
+        return $this->get_cache( TRUE );
 
       } else {
 
@@ -1314,12 +1334,12 @@
         $timeTaken = $this->stop_timer();
 
         // Cache
-        if ( $this->cache ) {
+        if ( $this->cache === TRUE ) {
           $this->set_cache();
         }
 
         // debug
-        if ( $this->debug ) {
+        if ( $this->debug === TRUE ) {
           $this->debug_data( $timeTaken, $this->sqlQuery );
         }
 
@@ -1350,7 +1370,7 @@
       $this->logData .= $this->log_string( $this->sqlQuery, "query" );
       $this->queryResult = NULL;
 
-      if ( $this->cache == TRUE && $this->verify_cache() ) {
+      if ( $this->cache === TRUE && $this->verify_cache() ) {
 
         return $this->get_cache();
 
@@ -1396,12 +1416,12 @@
         $timeTaken = $this->stop_timer();
 
         // Cache
-        if ( $this->cache ) {
+        if ( $this->cache === TRUE ) {
           $this->set_cache();
         }
 
         // debug
-        if ( $this->debug ) {
+        if ( $this->debug === TRUE ) {
           $this->debug_data( $timeTaken, $this->sqlQuery );
         }
 
@@ -1781,7 +1801,7 @@
 
       } else {
 
-        if ( !is_array( $identifier ) && !is_null( $identifier ) ) {
+        if ( ! is_array( $identifier ) && ! is_null( $identifier ) ) {
           $this->logData .= $this->log_string( 'PDO identifier must be an array.', 'error' );
           $this->errorMsg[] = "PDO identifier must be an array.";
           return FALSE;
@@ -1845,16 +1865,19 @@
       }
 
       $where = '';
+      $queryWhere = '';
 
       if ( ! $this->PDO ) {
 
-        if ( !empty( $identifier ) ) {
+        if ( ! empty( $identifier ) ) {
           if ( substr( strtoupper( trim( $identifier ) ), 0, 5 ) != 'WHERE' ) {
             $where = " WHERE ". $identifier;
           } else {
             $where = " " . trim( $identifier );
           }
         }
+        $this->affectedData = $this->fetch( "SELECT * FROM `" . $tableName . "` " . $where );
+
         $this->sqlQuery = "DELETE FROM " . $tableName . $where;
         $this->logData .= $this->log_string( $this->sqlQuery, "query" );
         if ( ! $this->query( $this->sqlQuery ) ) {
@@ -1873,27 +1896,34 @@
           } else {
             $where = " " . trim( $identifier );
           }
-         $this->sqlQuery .= $where;
-         $stmt = $this->conn->prepare( $this->sqlQuery );
-       }
-
-        if ( is_null( $identifier ) ) {
+          $this->sqlQuery .= $where;
+          $this->affectedData = $this->fetch( "SELECT * FROM `" . $tableName . "` " . $where );
           $stmt = $this->conn->prepare( $this->sqlQuery );
         }
 
-        if ( !is_null( $identifier ) && is_array( $identifier ) ) {
+        if ( is_null( $identifier ) ) {
+          $stmt = $this->conn->prepare( $this->sqlQuery );
+          $this->affectedData = $this->fetch( "SELECT * FROM `" . $tableName . "` " );
+        }
+
+        if ( ! is_null( $identifier ) && is_array( $identifier ) ) {
            foreach ( $identifier as $key => $value) {
             $where .= " AND {$key} = :{$key}";
             $variable[$key] = $this->escape( $value, FALSE );
+            $queryWhere .= " AND `" . $key . "` = '" . $value . "'";
           }
           $this->sqlQuery .= " WHERE " . substr( $where, 4 );
+          $queryWhere = " WHERE " . substr( $queryWhere, 4 );
+
           $stmt = $this->conn->prepare( $this->sqlQuery );
           foreach ( $identifier as $field => $value ) {
             $bindField = ':' . $field;
             $stmt->bindParam( $bindField, $identifier[$field], PDO::PARAM_INT );
           }
         }
+
         $this->logData .= $this->log_string( $this->sqlQuery, 'query' );
+        $this->affectedData = $this->fetch( "SELECT * FROM `" . $tableName . "` " . $queryWhere );
         if ( ! $stmt->execute( $variable ) ) {
           $error = $this->sql_error( $stmt );
           $this->errorMsg[] = $error;
@@ -1906,6 +1936,20 @@
       }
 
     }
+
+    /**
+    *
+    * Get data that's affected by delete, insert and update
+    *
+    * @access public
+    * @return array
+    * @param string $charset -> Character set name (optional)
+    *
+    **/
+    // public function affected_data( $SQL ) {
+    //   $this->logData .= $this->log_string( "affected_data() called" );
+
+    // }
 
     /**
     *
@@ -2371,6 +2415,36 @@
 
     /**
     *
+    * Arrange specified table fields to get specific instead
+    * of fetch all
+    *
+    * @access public
+    * @return string
+    * @param array|string $tableFields -> Table fields to get in query
+    *
+    **/
+    public function prepare_fields( $tableFields = '*' ) {
+      if ( empty( $tableFields ) )
+        $tableFields = '*';
+
+      $fields = '';
+      if ( is_array( $tableFields ) ) {
+        foreach ( $tableFields as $key => $value ) {
+          if ( empty( $key ) ) {
+            $fields .= ', ' . $value;
+          } else {
+            $fields .= ', ' . $key . ' AS ' . $value;
+          }
+        }
+        $arrangeFields = trim( substr( $fields, 2 ) );
+      } else {
+        $arrangeFields = $tableFields;
+      }
+      return $arrangeFields;
+    }
+
+    /**
+    *
     * Convert array|object to xml
     *
     * @access public
@@ -2430,6 +2504,12 @@
         case 'unserialize':
           $outputData = unserialize( $value );
           break;
+        case 'serialbase':
+          $outputData = base64_encode( serialize( $value ) );
+          break;
+        case 'unserialbase':
+          $outputData = unserialize( base64_decode( $value ) );
+          break;
         case "base64encode":
         case "base64e":
           $outputData = base64_encode( $value );
@@ -2478,7 +2558,7 @@
     * @param string $type -> Output type
     *
     **/
-    public function _encrypt( $value, $type = 'md5' ) {
+    public function encrypt( $value, $type = 'md5' ) {
       $this->logData .= $this->log_string( "_encrypt() called" );
 
       if ( is_null( $value ) )
@@ -2683,16 +2763,16 @@
     *
     * @access public
     * @return mixed
-    * @param string $result -> Database query result
+    * @param bool $object -> Get results in object if FALSE and array if TRUE
     *
     **/
-    public function get_cache(){
+    public function get_cache( $object = FALSE ){
       $this->logData .= $this->log_string( "get_cache() called" );
       $this->logData .= $this->log_string( $this->sqlQuery, "query" );
 
       $this->start_timer();
 
-      if ( !$cacheFile = @file_get_contents( $this->cacheFile ) ) {
+      if ( ! $cacheFile = @file_get_contents( $this->cacheFile ) ) {
 
         $this->logData .= $this->log_string( "Could not read cache " . $this->cacheFile, "error" );
         $this->errorMsg[] = "Cache: <em>Could not read cache " . $this->cacheFile . "</em>";
@@ -2700,7 +2780,7 @@
 
       }
 
-      if ( !$this->queryResult = json_decode( $cacheFile ) ) {
+      if ( ! $this->queryResult = json_decode( $cacheFile, $object ) ) {
 
         $this->logData .= $this->log_string( "get_cache() failed", "error" );
         return FALSE;
@@ -2711,7 +2791,7 @@
       $this->numRows = count( $this->queryResult );
 
       // debug
-      if ( $this->debug ) {
+        if ( $this->debug === TRUE ) {
 
         $this->debug_data( $timeTaken, $this->sqlQuery, 'cache' );
 
@@ -2741,6 +2821,243 @@
                                 'Time' => $time,
                                 'Type' => $queryType
                               );
+    }
+
+    /**
+    *
+    * Process command API for SMS, payment... platform
+    *
+    * @access public
+    * @return string|bool
+    * @param string $apiURL -> SMS API URL
+    * @param array $postData -> SMS Settings (numbers, message, to...)
+    * @param string|bool $CAINFO -> Certification information
+    *
+    **/
+    public function process_command_api( $apiURL, $postData, $CAINFO = FALSE ) {
+      if ( ! is_array( $postData ) ) {
+        $this->errorMsg[] = 'invalid_sms_settings';
+        return FALSE;
+      }
+
+      $result = '';
+
+      // set parameters the API needs for sending sms
+      $postFields = $this->build_http_query( $postData );
+
+      if ( ! function_exists( 'curl_version' ) || ! extension_loaded( 'curl' ) ) {
+        $apiURL .= $postFields;
+        // Please ensure if allow_url_include and allow_url_fopen
+        // are set to 'On' in php.ini.
+        // Uncomment them if these lines are commented.
+        if ( function_exists( 'file_get_contents' ) ) {
+
+          // Send SMS and get response
+          $result = @file_get_contents( $apiURL );
+
+        } else {
+
+          $handler = @fopen( $apiURL, 'r' );
+          if ( $handler ) {
+            while ( $line = @fgets( $handler, 1024 ) ) {
+              $result .= $line;
+            }
+
+            @fclose( $handler );
+          }
+        }
+      }
+
+      if ( empty( $result ) ) {
+
+        // Open connection
+        $ch = curl_init();
+
+        // Set the URL to fetch
+        curl_setopt( $ch, CURLOPT_URL, $apiURL );
+
+        // Don't include the header in the output
+        curl_setopt( $ch, CURLOPT_HEADER, FALSE );
+
+        // Set to perform regular HTTP POST
+        curl_setopt( $ch, CURLOPT_POST, TRUE );
+
+        // Return transfer value as a string instead of
+        // outputting it out directly
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
+
+        // Set the full data to POST
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, $postFields );
+
+        // Follow any location header
+        curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, TRUE );
+
+        // Set number of redirect
+        curl_setopt( $ch, CURLOPT_MAXREDIRS, 2 );
+
+        // Set the content of the Referer header to be used
+        // in the HTTP request
+        // curl_setopt( $ch, CURLOPT_REFERER, $apiURL );
+
+        // Set the content of the User Agent header to be used in the
+        // HTTP request
+        curl_setopt( $ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT'] );
+
+        if ( ! empty( $CAINFO ) && $CAINFO !== FALSE ) {
+          // For development test on local machine.
+          // Path of Certificate.
+          $CAPATH = "C:/xampp/php/cacert.pem";
+          $CASSLPEER = FALSE;
+
+          if ( is_array( $CAINFO ) ) {
+           if ( isset( $CAINFO['path'] ) )
+            $CASSLPEER = $CAINFO['path'];
+
+           if ( isset( $CAINFO['ssl'] ) )
+            $CASSLPEER = $CAINFO['ssl'];
+          }
+
+          // Stop cURL from verifying the peer's certificate
+          curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, $CASSLPEER );
+
+          // To check the existence of a common name in the SSL
+          // peer certificate and also to verify that it matches
+          // the hostname provided.
+          // curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
+
+          // The path of the certificate to verify
+          curl_setopt( $ch, CURLOPT_CAINFO, $CAPATH );
+        }
+
+        // Execute POST
+        $result = curl_exec( $ch );
+        $errMsg = curl_error( $ch );
+        $curlInfo = curl_getinfo( $ch );
+
+        // Close connection
+        curl_close( $ch );
+      }
+      return $result;
+    }
+
+    /**
+    *
+    * Prepare http query
+    *
+    * @access public
+    * @return string
+    * @param array $urlKeys -> HTTP URL keys
+    *
+    **/
+    public function build_http_query( $urlKeys ) {
+      if ( ! is_array( $urlKeys ) ) {
+        $this->errorMsg[] = 'invalid_http_settings';
+        return FALSE;
+      }
+
+      $urlString = '';
+      foreach ( $urlKeys as $key => $value ) {
+        if ( is_array( $value ) ) {
+          $urlString .= $value['key'] . '=' . urlencode( $value['value'] ) . '&';
+        } else {
+          $urlString .= $key . '=' . $value . '&';
+        }
+      }
+      return rtrim( $urlString, '&' );
+    }
+
+    /**
+    *
+    * Random characters generator
+    *
+    * @access public
+    * @return string|integer
+    * @param integer $length -> The number of characters to generate
+    * @param array $options -> The type of characters to generate
+    *
+    **/
+    public function generate_code( $length = 40, $options = NULL ) {
+      $generatedCode = '';
+      $capsLetters = array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' );
+      $smallLetters = array( 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' );
+      $numbers = array( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' );
+      $specialChars = array( '+', '-', '*', '&', '$', '#', '@', '!', '{', '}', '(', ')' );
+      $userChars = '';
+
+      if ( ! is_array( $options ) || empty( $options ) ) {
+        $characters = array( 1, 2, 3, 4 );
+      } else {
+        $characters = array();
+
+        // Check if capital letters are required
+        if ( in_array( 'caps', $options ) || ( isset( $options['caps'] ) || array_key_exists( 'caps', $options ) ) ) {
+          $characters[] = 1;
+        }
+
+        // Check if small letters are required
+        if ( in_array( 'small', $options ) || ( isset( $options['small'] ) || array_key_exists( 'small', $options ) ) ) {
+          $characters[] = 2;
+        }
+
+        // Check if numbers are required
+        if ( in_array( 'number', $options ) || ( isset( $options['number'] ) || array_key_exists( 'number', $options ) ) ) {
+          $characters[] = 3;
+        }
+
+        // Check if special characters are required
+        if ( in_array( 'special', $options ) || ( isset( $options['special'] ) || array_key_exists( 'special', $options ) ) ) {
+          $characters[] = 4;
+        }
+
+        // Check if user defined characters are set
+        if ( in_array( 'chars', $options ) || ( isset( $options['chars'] ) || array_key_exists( 'chars', $options ) ) ) {
+          $characters[] = 5;
+          $userChars = ( is_array( $options['chars'] ) ) ? $options['chars'] : str_split( $options['chars'] );
+        }
+
+      }
+
+      for ( $i = 0; $i < $length; $i++ ) {
+        // To decide if the character should be capital letters,
+        // small letters, numbers, special characters and user
+        // defined characters
+        $single = ( count( $characters ) > 1 ) ? array_rand( $characters ) : 0;
+        $index = '';
+
+        // Get a random character if capital letters
+        if ( $characters[$single] == 1 ) {
+          $index = array_rand( $capsLetters );
+          $generatedCode .= $capsLetters[$index];
+        }
+
+        // Get a random character if small letters
+        if ( $characters[$single] == 2 ) {
+          $index = array_rand( $smallLetters );
+          $generatedCode .= $smallLetters[$index];
+        }
+
+        // Get a random character if numbers
+        if ( $characters[$single] == 3 ) {
+          $index = array_rand( $numbers );
+          $generatedCode .= $numbers[$index];
+        }
+
+        // Get a random character if special characters
+        if ( $characters[$single] == 4 ) {
+          $index = array_rand( $specialChars );
+          $generatedCode .= $specialChars[$index];
+        }
+
+        // Get a random character if user defined characters
+        if ( $characters[$single] == 5 ) {
+          $index = array_rand( $userChars );
+          $generatedCode .= $userChars[$index];
+        }
+
+      }
+
+      return $generatedCode;
+
     }
 
     /**
@@ -2864,6 +3181,31 @@
       }
 
       return $string;
+    }
+
+
+    /**
+    *
+    * Print raw results
+    *
+    * @access public
+    * @return mixed
+    * @param mixed $data -> Data to print out.
+    * @param bool $pre -> Return result in <pre></pre> tag if TRUE.
+    *
+    **/
+    public function print_result( $data = NULL, $pre = FALSE ) {
+      if ( $data === FALSE )
+        return FALSE;
+
+      if ( $pre === TRUE ) {
+        echo '<pre>';
+        print_r( $data );
+        echo '</pre>';
+      } else {
+        print_r( $data );
+      }
+
     }
 
     /**
