@@ -2,7 +2,7 @@
 
   /**
   *
-  *	This file is to set up files variable and include function
+  *	This file is to set up files, variables, include function
   * and class library
   *
   * @package        Stvdi
@@ -33,20 +33,28 @@
   */
   $GLOBALS['loader'] = new auto_loader();
 
+  // Set extra class path
+  $loader->set_class_path(
+    array(
+      'includes/classes/'
+    )
+  );
+
   // Load all functions and class library
-  if ( ! $loader ) {
+  if ( ! $loader->load() ) {
     $loader->errors();
   }
 
   // PHP Error reporting
   if ( ! $config['error_reporting'] ) {
     php_error_reporting( $config['error_type'] );
+    ini_set( 'display_errors', 'On' );
   }
 
 
   // Custom cache storage location
   // Note: It should come before database object initialization
-  $config['cache_path'] = APP_DIR . $config['uploads'] . '/' . get_uname() . '/caches/';
+  $config['cache_path'] = APP_DIR . $config['uploads'] . '/' . get_unique_name() . '/caches/';
 
   /**
   *
@@ -69,7 +77,30 @@
 
   /**
   *
-  * Form object
+  * Users object
+  * @global object $user
+  *
+  */
+  $GLOBALS['user'] = new Users( $config );
+
+  // Set database object
+  $user->set_db_object( $database );
+
+  // Set language object
+  $user->set_language_object( $language );
+
+  // Set super user identifier
+  $user->set_super_identifier( 'stvdi' );
+
+  // Set unique name
+  $user->set_unique_name( get_unique_name() );
+
+  // Set unique id for querying
+  $user->set_unique_id( '', 'school_id' );
+
+  /**
+  *
+  * Form builder object
   * @global object $form
   *
   */
@@ -93,6 +124,23 @@
 
   /**
   *
+  * School object
+  * @global object $school
+  *
+  */
+  $GLOBALS['school'] = new School( $config );
+
+  // Set unique name
+  $school->set_unique_name( get_unique_name() );
+
+  // Valid unique name
+  $schoolID = $school->verify_unique_name();
+
+  // Check if unique name has been changed
+  $school->unique_name_redirect();
+
+  /**
+  *
   * Page object
   * @global object $page
   *
@@ -105,9 +153,22 @@
   // Set the template folder
   $page->set_template( $tempFolder );
 
+  $page->set_default_page( 'login' );
+
+  // Invalid school unique name
+  if ( $schoolID === FALSE ) {
+    $page->load( '404' );
+    exit;
+  }
+
+  // if ( empty( get_unique_name() ) )
+  // echo get_unique_name();
+  // echo '<br />';
+
+
   // !important: runs all page load
   if ( get_page() && ! get_action() ) {
-    $page->load( get_page(), get_page() );
+    $page->load( get_page() );
   } else if ( get_page() && get_action() ) {
     // Work on this part as soon as individual pages
     // has been created and organized
@@ -121,7 +182,5 @@
   } else {
     $page->load();
   }
-
-
 
 ?>
