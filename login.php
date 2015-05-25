@@ -13,7 +13,7 @@
     } else {
       $errorClass = 'errorInput';
       $errorMsg = TRUE;
-      echo $error = $user->errors() .'Are';
+      echo $error = $user->errors();
     }
 
   } else {
@@ -63,9 +63,6 @@
                   <div id="alert-10488" class="alert-pane error" style="margin-bottom: 10px; font-size: 1em; color: #E84C3D; background-color: #FDDDDD; border: 1px solid #E84C3D">
                     <i aria-hidden="true" data-icon="Â" style="float: left; margin-left: 2%; margin-bottom: 2%"></i>
                     <p style="margin-left: 8%; font-size: 1em; line-height: 1.2em">
-                      <?php
-                        echo $error . 'we';
-                      ?>
                       Please enter your Username/Password.
                     </p>
                   </div>
