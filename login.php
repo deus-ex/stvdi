@@ -1,3 +1,6 @@
+<?php
+session_destroy();
+?>
 <!DOCTYPE html>
 <html>
 	<head>

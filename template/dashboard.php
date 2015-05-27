@@ -1,3 +1,10 @@
+<?php
+if ($_POST){
+	session_start();
+	extract($_POST);
+	$_SESSION['username'] = $user; // Must be already set
+}
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -6,11 +13,44 @@
 		<title>Stvdi: DashBoard</title>
 		<link href="../stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 		<link href="../stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="../javascripts/lib/jquery.js"></script>
+<!--		<script type="text/javascript" src="../javascripts/lib/jquery-1.9.1.min.js"></script>
+-->        <script type="text/javascript" src="../javascripts/lib/jquery.isotope.min.js"></script>
+        <script type="text/javascript" src="../javascripts/chat.js"></script>
 	</head>
 
 	<body>
 
 		<div id="wrapper">
+        <div class="chatboxHolder">        
+            <div class="chatboxhead" onClick="javascript:toggleChatBoxGrowth(\''+chatboxtitle+'\')">
+                <div class="chatboxtitle">'+chatboxtitle+'</div>
+                <div class="chatboxoptions">
+                <img src="../images/icons/male27.png" onClick="javascript:closeChatBox(\''+chatboxtitle+'\')" class="chatboximg">
+                <img src="../images/icons/gear39.png" onClick="javascript:closeChatBox(\''+chatboxtitle+'\')" class="chatboximg">
+                <img src="../images/icons/cross97.png" onClick="javascript:closeChatBox(\''+chatboxtitle+'\')" class="chatboximg">
+                </div>
+                <br clear="all"/>
+            </div>
+            <div class="chatboxcontent">
+                <div class="chatboxmessage clearFix">
+                    <span class="chatboxmessagefrom floatLeft">
+                    	<img src="../community/images/users/Amarachi.jpg" class="chatboxprofile">
+                    </span>
+                    <span class="chatboxmessagecontentleft curveAllRightEdges curveBottomLeftEdge floatLeft">when i survey, the wondrous cross on which the prince of glory died, my greatest gain i count but loss, i sa...</span>
+                </div>
+                
+                <div class="chatboxmessage clearFix">
+                    <span class="chatboxmessagefrom floatRight">
+                    	<img src="../community/images/users/Amarachi.jpg" class="chatboxprofile">
+                    </span>
+                    <span class="chatboxmessagecontentright curveAllLeftEdges curveBottomRightEdge floatRight">that is a very lovely song ooo</span>
+                </div>
+            </div>
+            <div class="chatboxinput">
+                <textarea class="chatboxtextarea" onkeydown="javascript:return checkChatBoxInputKey(event,this,\''+chatboxtitle+'\');"></textarea>
+            </div>
+        </div>
 
 			<div id="topBar" class="Colour-Blue">
 				<div class="logo floatLeft"><h3>stvdi</h3></div>
@@ -24,7 +64,7 @@
                             <li class="activity"><a href="#"><img src="../images/icons/time36.png" class="menuImg"><h6>Activity Logs</h6></a></li>
                             <li class="help"><a href="#"><img src="../images/icons/question55.png" class="menuImg"><h6>Help Centre</h6></a></li>
                             <li class="settings"><a href="#"><img src="../images/icons/settings38.png" class="menuImg"><h6>Settings</h6></a></li>
-                            <li class="signout"><a href="../index.php"><img src="../images/icons/sign4.png" class="menuImg"><h6>Sign Out</h6></a></li>
+                            <li class="signout"><a href="../login.php"><img src="../images/icons/sign4.png" class="menuImg"><h6>Sign Out</h6></a></li>
                         </ul>
                     </li>
                     <li class="floatLeft">
@@ -65,9 +105,9 @@
     
                 <div id="chatBar" class="Colour-White floatRight">
                 	<div class="chatName"><input type="text" class="searchBar chatSearch" id="search" placeholder="Search Chat..."/></div>
-                    <img src="../community/images/users/Amarachi.jpg" class="chatImg floatLeft">
+                    <img src="../community/images/users/Amarachi.jpg" class="chatImg floatLeft" onclick="javascript:chatWith('Amarachi')">
                     <div class="chatName clearFix text-Blue"><h6 class="strong">Amarachi Ezimoha</h6><span class="text-Green"><h7>Online</h7></span></div>
-                    <img src="../community/images/users/Ama.jpg" class="chatImg floatLeft">
+                    <img src="../community/images/users/Ama.jpg" class="chatImg floatLeft" onclick="javascript:chatWith('Rabiu')">
                     <div class="chatName clearFix text-Blue"><h6 class="strong">Rabiu Abdul</h6><span class="text-Green"><h7>Online</h7></span></div>
                     <img src="../community/images/users/Morphic.jpg" class="chatImg floatLeft">
                     <div class="chatName clearFix text-Blue"><h6 class="strong">Awelu Muhammad</h6><span class="text-Green"><h7>Online</h7></span></div>
@@ -268,6 +308,6 @@
 
 		</div>
 		<!-- End #wrapper -->
-
+    
 	</body>
 </html>
