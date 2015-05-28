@@ -232,7 +232,7 @@ img{
 }
 
 .loginContent .spanFull{
-	margin:0 0 15px 0;
+	margin:0 0 10px 0;
 }
 
 .loginContent .divided{
@@ -279,6 +279,9 @@ img{
 	padding: 10px;
 	height:75%;
 	min-height:330px;
+	min-width:200px;
+	width:auto;
+	max-width:300px;
 }
 
 .loginImage{
@@ -971,6 +974,7 @@ img{
 	
 	.loginTable {
 		min-height: 290px;
+		max-width:250px;
 	}
 }
 
@@ -979,6 +983,7 @@ img{
 		position: relative;
 		min-height: 300px;
 		margin:10px 0;
+		max-width:none;
 	}
 
 	.modalWrapper{
@@ -1314,7 +1319,14 @@ img{
 .text-Lgray{color:#797979;}
 .text-Green{color:#197B0A;}
 .text-White{color:#FFFFFF;}
-.text-Red{color:#DD4B39;}
+.text-Red{color:#E84C3D;}
+
+
+.border-Red{border: 1px solid #E84C3D;}
+.border-Black{border: 1px solid #000;}
+.border-Blue{border: 1px solid #0072C5;}
+.border-White{border: 1px solid #FFF;}
+.border-Gray{border: 1px solid #6E6D6C;}
 
 .clearFix:before, .clearFix:after { content: ""; display: table; }
 .clearFix:after { clear: both; }
