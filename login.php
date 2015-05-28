@@ -58,15 +58,7 @@
                   </div>
                   <!-- End .spanFull div -->
 
-                  <div id="alert-10488" class="alert-pane error" style="margin-bottom: 10px; font-size: 1em; color: #E84C3D; background-color: #FDDDDD; border: 1px solid #E84C3D">
-                    <i aria-hidden="true" data-icon="Â" style="float: left; margin-left: 2%; margin-bottom: 2%"></i>
-                    <p style="margin-left: 8%; font-size: 1em; line-height: 1.2em">
-                      <?php
-                        echo $error;
-                      ?>
-                      Please enter your Username/Password.
-                    </p>
-                  </div>
+                  <div id="alert-10488" class="spanFull formPadding borderAll text-Red Colour-Pink border-Red"><h6><?php echo $error; ?>Please enter your Username/Password</h6></div>
 
                   <?php
                     $form->open_tag(
