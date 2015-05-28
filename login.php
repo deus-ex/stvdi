@@ -16,8 +16,6 @@
       echo $error = $user->errors();
     }
 
-  } else {
-
   }
 
 ?>
